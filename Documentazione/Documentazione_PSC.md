@@ -59,7 +59,7 @@
 
   -   Data di inizio del progetto: 9 Settembre 2021
 
-  -   Data di consegna del progetto: x y 2021
+  -   Data di consegna del progetto: 23 Dicembre 2021
 
 ### Abstract
 
