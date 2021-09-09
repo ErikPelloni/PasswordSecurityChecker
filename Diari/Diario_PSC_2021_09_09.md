@@ -13,6 +13,7 @@
 |14:00 - 15:15 |Inizio documentazione e aggiornamento del diario    |
 |15:15 - 15:20 |Discussione analisi con il docente    |
 |15:20 - 15:30 |Aggiornamento analisi    |
+|15:30 - 15:50 |Aggiornamento diario e [README.md](../README.md)    |
 |15:30 - 16:30 |Definizione attività e inizio creazione gantt   |
 
 [//]: <> (##  Problemi riscontrati e soluzioni adottate)
