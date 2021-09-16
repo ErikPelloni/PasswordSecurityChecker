@@ -5,7 +5,7 @@
 |Erik Pelloni|Luca Muggiasca      |
 
 
-## Informazioni varie
+## Informazioni
 
 Si tratta di un applicativo che, passate alcune informazioni base, prova a forzare la password fornita provando tutte le combinazioni dalle più frequenti a quelle meno probabili.
 
@@ -22,6 +22,8 @@ Si tratta di un applicativo che, passate alcune informazioni base, prova a forza
 ## Collegamenti
 [Documentazione](Documenti/Documentazione_PSC.md)
 
-[Gantt Preventivo](Documenti/PasswordSecurityChecker-consuntivo.mpp)
-
 [Diari](Diari/)
+
+[Gantt](Documenti/Gantt/)
+
+[Mandato (QdC)](Documenti/QdC_EP_PasswordSecurityChecker.docx)
