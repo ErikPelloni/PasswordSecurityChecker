@@ -51,8 +51,6 @@
 
 #### Informazioni sul progetto
 
-  In questo capitolo raccogliere le informazioni relative al progetto, ad esempio:
-
   -   Allievo e docente coinvolti nel progetto: Erik Pelloni, Luca Muggiasca (docente)
 
   -   SAM Trevano sezione informatica I3BB 2021/2022
@@ -105,7 +103,6 @@
   Lo scopo del progetto (scopi didattici/scopi operativi). Dovrebbe
   descrivere il mandato, ma non vanno ricopiate le informazioni del
   quaderno dei compiti (che va invece allegato).
-
 
 ## Analisi
 
@@ -368,7 +365,7 @@ stato una perdita di tempo? I risultati ottenuti sono generali,
 facilmente generalizzabili o sono specifici di un caso particolare? ecc
 
 ### Sviluppi futuri
-  Migliorie o estensioni che possono essere sviluppate sul prodotto.
+  + Aggiunta di un'interfaccia grafica
 
 ### Considerazioni personali
   Cosa ho imparato in questo progetto? ecc
@@ -423,7 +420,7 @@ Elenco degli allegati, esempio:
 
 -   Diari di lavoro
 
--   Codici sorgente/documentazione macchine virtuali
+-   Codici sorgente
 
 -   Istruzioni di installazione del prodotto (con credenziali
     di accesso) e/o di eventuali prodotti terzi
@@ -432,7 +429,7 @@ Elenco degli allegati, esempio:
 
 -   Eventuali guide utente / Manuali di utilizzo
 
--   Mandato e/o Qdc
+-   Mandato / Qdc
 
 -   Prodotto
 
