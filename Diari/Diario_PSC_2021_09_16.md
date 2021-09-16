@@ -11,8 +11,7 @@
 |--------------|------------------------------|
 |11:00 - 12:20   |Gantt preventivo          |
 |15:00 - 15:10 |Fine gantt preventvo    |
-|15:15 - 15:20 |Discussione analisi con il docente    |
-|15:20 - 15:30 |Aggiornamento analisi    |
+|15:15 - 15:50 |Aggiornamento diario e [README.md](../README.md)    |s
 |15:30 - 15:50 |Aggiornamento diario e [README.md](../README.md)    |
 |15:30 - 16:30 |Definizione attività e inizio creazione gantt   |
 
