@@ -1,11 +1,11 @@
 # PasswordSecurityChecker
-<center>
+<p align="center">
 
 |Autore      |Docente responsabile|
 |------------|--------------------|
 |Erik Pelloni|Luca Muggiasca      |
 
-</center>
+<p>
 
 ***
 
