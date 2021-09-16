@@ -8,4 +8,6 @@ Si tratta di un applicativo che, passate alcune informazioni base, prova a forza
 ## Collegamenti
 [Documentazione](Documenti/Documentazione_PSC.md)
 
+[Gantt Preventivo](Documenti/PasswordSecurityChecker-consuntivo.mpp)
+
 [Diari](Diari/)
