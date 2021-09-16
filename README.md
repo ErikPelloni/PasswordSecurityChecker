@@ -1,15 +1,19 @@
 # PasswordSecurityChecker
-<p align="center">
 
 |Autore      |Docente responsabile|
 |------------|--------------------|
 |Erik Pelloni|Luca Muggiasca      |
 
-<p>
 
-***
+## Informazioni varie
 
 Si tratta di un applicativo che, passate alcune informazioni base, prova a forzare la password fornita provando tutte le combinazioni dalle più frequenti a quelle meno probabili.
+
+|Data inizio |Data consegna|
+|------------|-------------|
+|09.09.2021  |23.12.2021   |
+
+
 
 ## Gantt preventivo
 
