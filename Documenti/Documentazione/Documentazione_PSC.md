@@ -22,7 +22,7 @@
 
   - [Design dell’architettura del sistema](#design-dell’architettura-del-sistema)
 
-  - [Design dei dati e database](#design-dei-dati-e-database)
+  - [Design procedurale](#design-procedurale)
 
 3. [Implementazione](#implementazione)
 
@@ -172,10 +172,10 @@
 
 
   |**ID**	|**Nome**			|**Priorità**|**Vers**|**Note**  |
-  |----|------------|--------|----|------|
-  |Req-12|Dovrà esserci una maschera di login|1|1.0|...|
-  |Req-13|Si dovranno poter immettere nuovi allievi|1|1.0|...|
-  |Req-14|Dovrà essere possibile la ricerca di allievi|1|1.0|...|
+  |-------|-------------|------------|--------|----------|
+  |Req-12 |Dovrà esserci una maschera di login|1|1.0|...|
+  |Req-13 |Si dovranno poter immettere nuovi allievi|1|1.0|...|
+  |Req-14 |Dovrà essere possibile la ricerca di allievi|1|1.0|...|
   
   
 
