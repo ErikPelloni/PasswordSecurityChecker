@@ -1,4 +1,4 @@
-1. [Introduzione](#introduzione)
+1. [Introduzione](#introduzione) 
 
   - [Informazioni sul progetto](#informazioni-sul-progetto)
 
