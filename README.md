@@ -19,10 +19,10 @@ Si tratta di un applicativo che, passate alcune informazioni base, prova a forza
 
 ## Gantt preventivo
 
-![GanttPreventivo](Documenti/Gantt-preventivo.png)
+![GanttPreventivo](Documenti/Gantt/Gantt-preventivo.png)
 
 ## Collegamenti
-[Documentazione](Documenti/Documentazione_PSC.md)
+[Documentazione](Documenti/Documentazione/Documentazione_PSC.md)
 
 [Diari](Diari/)
 
