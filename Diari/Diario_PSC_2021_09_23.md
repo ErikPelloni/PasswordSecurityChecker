@@ -8,7 +8,7 @@
 |Orario        |Lavoro svolto                                                   |
 |--------------|----------------------------------------------------------------|
 |12:15 - 12:20 |Creazione nuovo diario                                          |
-|15:00 - 15:10 |Fine gantt preventvo                                            |
+|13:30 - 14:30 |Activity diagram                                            |
 |15:15 - 16:15 |Aggiornamento diario, [README.md](../README.md) e documentazione|
 
 [//]: <> (##  Problemi riscontrati e soluzioni adottate)
@@ -18,5 +18,4 @@
 
 
 ## Programma di massima per la prossima giornata di lavoro
-+ Prime 2 ore test teorico
 + Continuare con la progettazione

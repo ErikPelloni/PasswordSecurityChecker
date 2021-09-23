@@ -206,9 +206,9 @@ requisiti.
 
 
 ### Use case
+![useCase](../use_case.png)
 
-I casi d’uso rappresentano l’interazione tra i vari attori e le
-funzionalità del prodotto.
+L'utente è in grado (tramite linea di comando) di verificare la sicurezza della propria password, anche in relazione con i propri dati personali.
 
 ### Pianificazione
 
@@ -249,9 +249,9 @@ nell’implementazione del prodotto.
 
 Descrive:
 
--   La struttura del programma/sistema lo schema di rete...
+-   Si tratta di un programma che viene invocato tramite linea di comando e con il passaggio di argomenti.
 
--   Gli oggetti/moduli/componenti che lo compongono.
+-   Composto da x classi scritte in java.
 
 -   I flussi di informazione in ingresso ed in uscita e le
     relative elaborazioni. Può utilizzare *diagrammi di flusso dei
@@ -264,10 +264,9 @@ Descrive:
 Descrizione delle strutture di dati utilizzate dal programma in base
 agli attributi e le relazioni degli oggetti in uso.
 
-### Schema E-R, schema logico e descrizione.
+### Activity Diagram
 
-Se il diagramma E-R viene modificato, sulla doc dovrà apparire l’ultima
-versione, mentre le vecchie saranno sui diari.
+![activity](../PSC-Activity_Diagram.png)
 
 ### Design delle interfacce
 
