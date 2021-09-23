@@ -259,14 +259,28 @@ Descrive:
 
 -   Eventuale sitemap
 
-### Design dei dati e database
-
-Descrizione delle strutture di dati utilizzate dal programma in base
-agli attributi e le relazioni degli oggetti in uso.
+### Design procedurale
+<br>
 
 ### Activity Diagram
 
 ![activity](../PSC-Activity_Diagram.png)
+
+#### Descrizione
+
+Lanciando l'applicazione si passano anche i dati necessari per il funzionmento.
+ <br>Se le informazioni non sono passate nel modo corretto o se l'utente ha scento di visualizzare l'help, l'applicazione mostra l'help (che spiega la formattazine dei valori di input) e chiede nuovamente di inserire i dati.
+ 
+ Una volta inseriti correttamente i dati il programma comincia a provare a forzare la password.
+
+ In un primo momento vengono provate le combinazioni più semplici. Se la password viene trovata, il programma giunge a termine, se no si passa al controllo successivo.
+
+ Il secondo controllo che viene effettuato è quello tra la password fornita e la lista di password più frequentemente utilizzate. Anche in questo caso la procedura di funzionamento del programma è la medesima: se la password viene trovata, il programma giunge a termine, se no si passa al controllo successivo.
+
+Se la password non è presente nemmeno all'interno della lista, il controllo da compiere è quello delle combinazioni più complesse. Nuovamente la procedura finale è la stessa.
+
+Infine, se l'utente ha deciso di effettuarla, l'ultima ricerca effettuata è quella brute force. Una volta trovata la password o raggiunto l'eventuale limite (di tempo o di tentativi, stabilito dll'utente) il programma giunge al termine e stampa l'output finale.
+<br> <br>
 
 ### Design delle interfacce
 
@@ -275,7 +289,7 @@ dell’interfaccia utente. La progettazione delle interfacce è basata
 sulle informazioni ricavate durante la fase di analisi e realizzata
 tramite mockups.
 
-### Design procedurale
+
 
 Descrive i concetti dettagliati dell’architettura/sviluppo utilizzando
 ad esempio:

@@ -4,10 +4,12 @@
 |------------|--------------------|
 |Erik Pelloni|Luca Muggiasca      |
 
+## Descrizione
+
+Si tratta di un applicativo che, passate alcune informazioni base, prova a forzare la password fornita provando tutte le combinazioni dalle più frequenti a quelle meno probabili.
 
 ## Informazioni
 
-Si tratta di un applicativo che, passate alcune informazioni base, prova a forzare la password fornita provando tutte le combinazioni dalle più frequenti a quelle meno probabili.
 
 |Data inizio |Data consegna|
 |------------|-------------|
