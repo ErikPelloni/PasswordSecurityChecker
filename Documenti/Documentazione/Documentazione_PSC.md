@@ -100,6 +100,7 @@
   -   Il prodotto può essere utilizzato da chiunque
 
   -   La competenza richiesta per l'utilizzo di questo programma è saper lanciare un programma tramite linea di comando. Non sono richieste altre conoscenze o competenze.
+  - È necessario avere Java installato sul dispositivo che si vuole utilizzare per eseguire il programma.
 
 ### Analisi e specifica dei requisiti
 
