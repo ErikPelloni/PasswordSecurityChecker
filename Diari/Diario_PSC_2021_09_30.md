@@ -9,8 +9,8 @@
 |--------------|----------------------------------------------------------------|
 |11:05 - 11:25 |Creazione nuovo diario e diagramma delle classi                 |
 |11:25 - 12:10 |Scrittura requisiti                                             |
-|13:25 - 15:00 |Aggiornamento documentazione                                    |
-|15:05 - 15:10 |Aggiornamento [README.md](../README.md)                         |
+|13:25 - 14:15 |Aggiornamento documentazione                                    |
+|14:15 - 14:20 |Creazione classe java                                           |
 |15:10 - 15:40 |Descrizione Activity diagram                                    |
 |15:45 - 16:30 |Progettazione diagramma delle classi                            |
 
