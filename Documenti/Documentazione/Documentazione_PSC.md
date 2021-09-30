@@ -61,28 +61,14 @@
 
 ### Abstract
 
-  E’ una breve e accurata rappresentazione dei contenuti di un documento,
-  senza notazioni critiche o valutazioni. Lo scopo di un abstract efficace
-  dovrebbe essere quello di far conoscere all’utente il contenuto di base
-  di un documento e metterlo nella condizione di decidere se risponde ai
-  suoi interessi e se è opportuno il ricorso al documento originale.
+  -   **Background/Situazione iniziale**:
+  Un utente vuole controllare la sicurezza della propria password.
 
-  Può contenere alcuni o tutti gli elementi seguenti:
+  -   **Descrizione del problema e motivazione**: Il programma, nel modo spiegato seguentemente permette di verificare il grado di sicurezza della password in base a dei dati personali. È importante utilizzare delle password efficaci in modo da evitare il furto di account o dati.
 
-  -   **Background/Situazione iniziale**
+  -   **Approccio/Metodi**: Sulla base di alcuni dati personali passati al programma, quest'ultimo proverà a scoprire la password.
 
-  -   **Descrizione del problema e motivazione**: Che problema ho cercato
-      di risolvere? Questa sezione dovrebbe includere l'importanza del
-      vostro lavoro, la difficoltà dell'area e l'effetto che potrebbe
-      avere se portato a termine con successo.
-
-  -   **Approccio/Metodi**: Come ho ottenuto dei progressi? Come ho
-      risolto il problema (tecniche…)? Quale è stata l’entità del mio
-      lavoro? Che fattori importanti controllo, ignoro o misuro?
-
-  -   **Risultati**: Quale è la risposta? Quali sono i risultati? Quanto è
-      più veloce, più sicuro, più economico o in qualche altro aspetto
-      migliore di altri prodotti/soluzioni?
+  -   **Risultati**: Il programma stampera l'esito finale (password trovata/non trovata), il numero di tentativi eseguiti per trovare la password e il tempo impiegato.
 
   Esempio di abstract:
 
@@ -100,9 +86,7 @@
 
 ### Scopo
 
-  Lo scopo del progetto (scopi didattici/scopi operativi). Dovrebbe
-  descrivere il mandato, ma non vanno ricopiate le informazioni del
-  quaderno dei compiti (che va invece allegato).
+  Lo scopo del progetto è quello di creare un programma che sia in grado di dare un feedback riguardante la sicurezza di una password.
 
 ## Analisi
 
@@ -210,11 +194,9 @@ nell’implementazione del prodotto.
 
 ### Design dell’architettura del sistema
 
-Descrive:
-
 -   Si tratta di un programma che viene invocato tramite linea di comando e con il passaggio di argomenti.
 
--   Composto da x classi scritte in java.
+-   Composto da 1 classe scritta in java.
 
 -   I flussi di informazione in ingresso ed in uscita e le
     relative elaborazioni. Può utilizzare *diagrammi di flusso dei
