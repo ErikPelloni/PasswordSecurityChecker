@@ -19,6 +19,9 @@ public class PasswordSecurityChecker{
     private List<String> commons;
     private int tries;
 
+    /**
+     * Il metodo displayHelp stampa il messaggio di help a terminale
+     */
     private static void displayHelp(){
         System.out.println("Password Security Checker\n\nUsage: " + 
                             "java PasswordSecurityChecker [<-h>] "+
@@ -28,7 +31,24 @@ public class PasswordSecurityChecker{
                             "about the program and formatting");
     }
 
-    
+    /**
+     * Il metodo checkData controlla se i dati passati da linea di comando
+     *  sono validi
+     * @param args argomenti passati da linea di comando
+     * @return true se i dati passati sono corretti
+     */
+    private static boolean checkData(String[] args){
+        for (String s : args) {
+            if(s.equals("-h") || s.equals("-help") || s.equals("h") 
+            || s.equals("help")){
+                displayHelp();
+                return false;
+            }
+        }
+
+        displayHelp();
+        return false;
+    }
     public static void main(String[] args) {
         displayHelp();
     }
