@@ -12,6 +12,8 @@
 |13:25 - 15:15 |Aggiornamento documentazione                                    |
 |15:20 - 15:25 |Creazione classe java                                           |
 |15:25 - 16:10 |Metodo help e manuale                                           |
+|16:10 - 16:15 |Agiornamento diario                                             |
+|16:15 - 16:30 |Inizio controllo validità dei dati                              |
 
 [//]: <> (##  Problemi riscontrati e soluzioni adottate)
 
