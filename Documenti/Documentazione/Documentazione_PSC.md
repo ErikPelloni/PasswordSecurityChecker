@@ -134,39 +134,17 @@
 
 ### Analisi e specifica dei requisiti
 
-  Il progettista, dopo aver ricevuto il mandato, in collaborazione con il
-  committente redige una lista di requisiti. Durante questi incontri,
-  tramite interviste (da inserire nei diari), il progettista deve cercare
-  di rispondere alle seguenti domande:
+  Seguono una descrizione dell'analisi e la specifica dei requisiti.
 
-  -   Quali sono i bisogni del committente?
+  -   La funzione del prodotto è quella di controllare la sicurezza di una password, cercando di trovarla utilizzando dei dati relativi alla persona.
 
-  -   Quali funzioni deve svolgere il prodotto?
+  -   Il prodotto è eseguiibile tramite linea di comando e stampa i risultati a terminale.
 
-  -   Come devono essere implementate?
+  -  I dati verranno utilizzati unicamente per il funzionamento del programma e vengono eliminati una volta completata l'operazione.
 
-  -   L’utente, come vorrebbe/dovrebbe interagire con il prodotto?
-
-  -   Come verrà utilizzato il prodotto?
-
-  -   Che tipo di interfaccia si immagina?
-
-  -   Che prestazioni minime deve fornire il prodotto?
-
-  -   Che grado di sicurezza deve avere il prodotto?
-
-  -   …
-
-  In base alla lista dei requisiti e all’analisi degli stessi, il
-  progettista redige una *specifica dei requisiti* in cui elenca e
-  descrive in modo dettagliato quali sono le funzionalità che il prodotto
-  fornirà. La specifica dovrebbe essere abbastanza dettagliata da poter
-  essere utilizzata come base per lo sviluppo, ma non troppo; ad esempio
-  non dovrebbe contenere dettagli di implementazione, o definizioni
-  dettagliate dell’interfaccia grafica a meno che questi non siano
-  considerati cruciali. Non si deve scordare che i requisiti non
-  rappresentano delle attività bensì delle caratteristiche che il prodotto
-  dovrà possedere.
+  In base alla lista dei requisiti e all’analisi degli stessi, è stata redatta una *specifica dei requisiti* nella quale sono elencate e
+  descritte in modo dettagliato le funzionalità che il prodotto
+  fornisce. I requisiti non rappresentano delle attività bensì delle caratteristiche che il prodotto possiede.
 
 
 
@@ -180,6 +158,9 @@
   |Req-05 |Controllo semplice|Verranno controllate delle password combinate in modo semplice|1|1.0|...|
   |Req-06 |Controllo complesso|Verranno controllate delle password combinate in modo più complesso|1|1.0|...|
   |Req-07 |Controllo password frequenti|Verrà controllata una lista contenente delle password frequenti|1|1.0|...|
+  |Req-08 |Brute force|Se la password non viene trovata con i controlli precedenti si prosegue con un attacco brute force, se l'utente lo decide|2|1.0|...|
+  |Req-09 |Stampa valori|Vengono stampati i tentativi effettuati e il tempo impiegato|1|1.0|...|
+  |Req-10 |Script|Sarà possibile passare i dati a uno script tramite file csv, lo script invocherà automaticamente il programma|3|1.0|...|
   
   
 
@@ -189,19 +170,19 @@
 
 **ID**: identificativo univoco del requisito
 
-**Nome**: breve descrizione del requisito
+**Titolo**: titolo dato al requisito
+
+**Nome**: descrizione del requisito
 
 **Priorità**: indica l’importanza di un requisito nell’insieme del
-progetto, definita assieme al committente. Ad esempio poter disporre di
-report con colonne di colori diversi ha priorità minore rispetto al
-fatto di avere un database con gli elementi al suo interno. Solitamente
-si definiscono al massimo di 2-3 livelli di priorità.
+progetto, definita assieme al committente. Sono defininiti al massimo di 3 livelli di priorità in questo modo:
++ 1: priorità maggiore
++ 3: priorità minore
 
 **Versione**: indica la versione del requisito. Ogni modifica del
 requisito avrà una versione aggiornata.
 
-Sulla documentazione apparirà solamente l’ultima versione, mentre le
-vecchie dovranno essere inserite nei diari.
+Sulla documentazione apparirà solamente l’ultima versione.
 
 **Note**: eventuali osservazioni importanti o riferimenti ad altri
 requisiti.

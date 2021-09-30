@@ -1,6 +1,6 @@
 # PASSWORD SECURITY CHECKER | Diario di lavoro
 #### Erik Pelloni
-### Trevano, 23 Settembre 2021
+### Trevano, 30 Settembre 2021
 
 ## Lavori svolti
 
@@ -8,8 +8,8 @@
 |Orario        |Lavoro svolto                                                   |
 |--------------|----------------------------------------------------------------|
 |11:05 - 11:25 |Creazione nuovo diario e diagramma delle classi                 |
-|11:25 - 14:50 |Scrittura requisiti                                             |
-|14:50 - 15:00 |Descrizione Activity diagram                                    |
+|11:25 - 12:10 |Scrittura requisiti                                             |
+|13:25 - 15:00 |Aggiornamento documentazione                                    |
 |15:05 - 15:10 |Aggiornamento [README.md](../README.md)                         |
 |15:10 - 15:40 |Descrizione Activity diagram                                    |
 |15:45 - 16:30 |Progettazione diagramma delle classi                            |
