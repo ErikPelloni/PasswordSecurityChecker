@@ -252,6 +252,9 @@ ad esempio:
 Questi documenti permetteranno di rappresentare i dettagli procedurali
 per la realizzazione del prodotto.
 
+### Diagramma delle classi
+<img src="../PasswordSecurityChecker_Classe.png" alt="diagramma classe" width="400"/>
+
 ## Implementazione
 
 In questo capitolo dovrà essere mostrato come è stato realizzato il
