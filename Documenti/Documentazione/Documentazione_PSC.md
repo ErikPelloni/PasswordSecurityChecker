@@ -171,11 +171,15 @@
 
 
 
-  |**ID**	|**Nome**			|**Priorità**|**Vers**|**Note**  |
-  |-------|-------------|------------|--------|----------|
-  |Req-12 |Dovrà esserci una maschera di login|1|1.0|...|
-  |Req-13 |Si dovranno poter immettere nuovi allievi|1|1.0|...|
-  |Req-14 |Dovrà essere possibile la ricerca di allievi|1|1.0|...|
+  |**ID**	|**Titolo**|**Descrizione**			|**Priorità**|**Vers**|**Note**  |
+  |-------|----------|-------------|------------|--------|----------|
+  |Req-01 |Linea di comando|Il programma sarà eseguibile tramite linea di comando|1|1.0|...|
+  |Req-02 |Dati input|Al programma verranno passati i seguenti dati:<br>  nome e cognome, data di nascita e un terzo dato a propria scelta |1|1.0|...|
+  |Req-03 |Controllo validità |Verrà eseguito un controllo della validità dei dati inseriti|1|1.0|...|
+  |Req-04 |Help |Sarà possibile visualizzare un help che mostra il funzionamento del programma|1|1.0|...|
+  |Req-05 |Controllo semplice|Verranno controllate delle password combinate in modo semplice|1|1.0|...|
+  |Req-06 |Controllo complesso|Verranno controllate delle password combinate in modo più complesso|1|1.0|...|
+  |Req-07 |Controllo password frequenti|Verrà controllata una lista contenente delle password frequenti|1|1.0|...|
   
   
 
