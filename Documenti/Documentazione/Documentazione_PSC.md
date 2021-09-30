@@ -108,29 +108,14 @@
 
 ### Analisi del dominio
 
-  Questo capitolo dovrebbe descrivere il contesto in cui il prodotto verrà
-  utilizzato, da questa analisi dovrebbero scaturire le risposte a quesiti
-  quali ad esempio:
+  Questo capitolo descrive il contesto in cui il prodotto verrà
+  utilizzato:
 
-  -   Background/Situazione iniziale
+  -   Il prodotto verrà utilizzato per controllare la sicurezza della propria password.
 
-  -   Quale è e come è organizzato il contesto in cui il prodotto dovrà
-      funzionare?
+  -   Il prodotto può essere utilizzato da chiunque
 
-  -   Come viene risolto attualmente il problema? Esiste già un prodotto
-      simile?
-
-  -   Chi sono gli utenti? Che bisogni hanno? Come e dove lavorano?
-
-  -   Che competenze/conoscenze/cultura posseggono gli utenti in relazione
-      con il problema?
-
-  -   Esistono convenzioni/standard applicati nel dominio?
-
-  -   Che conoscenze teoriche bisogna avere/acquisire per poter operare
-      efficacemente nel dominio?
-
-  -   …
+  -   La competenza richiesta per l'utilizzo di questo programma è saper lanciare un programma tramite linea di comando. Non sono richieste altre conoscenze o competenze.
 
 ### Analisi e specifica dei requisiti
 
