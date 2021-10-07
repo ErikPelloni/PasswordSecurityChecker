@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -11,9 +12,9 @@ import java.util.List;
  */
 
 public class PasswordSecurityChecker{
-    private List<String> name;
+    private String[] name;
     private int[] birth;
-    private List<String> data;
+    private String[] data;
     private char[] specials;
     private String password;
     private List<String> commons;
@@ -38,21 +39,41 @@ public class PasswordSecurityChecker{
      * @return true se i dati passati sono corretti
      */
     private static boolean checkData(String[] args){
-        for (String s : args) {
-            if(s.equals("-h") || s.equals("-help") || s.equals("h") 
-            || s.equals("help")){
-                displayHelp();
-                return false;
+        check:
+        if(args.length >= 3){
+            // controllo che non sia richiesto l'help
+            for (String s : args) {
+                if(s.equals("-h") || s.equals("-help") || s.equals("h") 
+                || s.equals("help")){
+                    break check;
+                }
             }
+            // controllo la validità del nome
+            if(args[0].split(" ").length <= 1){
+                System.out.println("Incorrect name");
+                break check;
+            }
+            // controllo validità data di nascita
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+            dateFormat.setLenient(false);
+            try {
+                dateFormat.parse(args[1]);
+            } catch (ParseException pe) {
+                System.out.println("Incorrect birth date");
+                break check;
+            }
+            return true;
         }
-
-        if(args[0].split(" ").length <= 1){
-            displayHelp();
-            return false;
-        }
-
-        return true;
+        displayHelp();
+        return false;
     }
+
+    private static void loadData(String[] args){
+        if(checkData(args)){
+
+        }
+    }
+
     public static void main(String[] args) {
         checkData(args);
     }

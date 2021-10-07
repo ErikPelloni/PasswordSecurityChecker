@@ -9,7 +9,7 @@
 |--------------|----------------------------------------------------------------|
 |11:05 - 11:25 |Creazione nuovo diario                                          |
 |11:25 - 12:20 |Controllo validità dati input                                   |
-|13:25 - 15:15 |Aggiornamento documentazione                                    |
+|13:20 - 15:15 |Controllo validità dati input                                   |
 |15:20 - 15:25 |Creazione classe java                                           |
 |15:25 - 16:10 |Metodo help e manuale                                           |
 |16:10 - 16:15 |Agiornamento diario                                             |
