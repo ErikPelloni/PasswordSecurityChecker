@@ -25,8 +25,8 @@ public class PasswordSecurityChecker{
     private static void displayHelp(){
         System.out.println("Password Security Checker\n\nUsage: " + 
                             "java PasswordSecurityChecker [<-h>] "+
-                            "<name surname> <dd.mm.yyyy> <information>"+
-                            " <password>"+
+                            "<\"name surname\"> <\"dd.mm.yyyy\">"+
+                            " <\"information\"> <\"password\">"+
                             "\n\nCheck the guide for more information " + 
                             "about the program and formatting");
     }
@@ -46,10 +46,14 @@ public class PasswordSecurityChecker{
             }
         }
 
-        displayHelp();
-        return false;
+        if(args[0].split(" ").length <= 1){
+            displayHelp();
+            return false;
+        }
+
+        return true;
     }
     public static void main(String[] args) {
-        displayHelp();
+        checkData(args);
     }
 }
