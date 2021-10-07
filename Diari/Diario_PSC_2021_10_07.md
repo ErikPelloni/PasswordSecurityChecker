@@ -10,16 +10,14 @@
 |11:05 - 11:25 |Creazione nuovo diario                                          |
 |11:25 - 12:20 |Controllo validità dati input                                   |
 |13:20 - 14:25 |Controllo validità dati input                                   |
-|15:20 - 15:25 |Salvataggio dati input                                          |
-|15:25 - 16:10 |Metodo help e manuale                                           |
-|16:10 - 16:15 |Agiornamento diario                                             |
-|16:15 - 16:30 |Inizio controllo validità dei dati                              |
+|14:30 - 16:30 |Salvataggio dati input                                          |
 
 [//]: <> (##  Problemi riscontrati e soluzioni adottate)
 
 
 ##  Punto della situazione rispetto alla pianificazione
-
+Sono in linea con la progettazione iniziale, le ore che avevo guadagnato le ho già riutilizzate
 ## Programma di massima per la prossima giornata di lavoro
-+ Terminare la lettura, il controllo e il salvataggio degli input
-+ Iniziare l'algoritmo di ricerca semplice
++ Finire velocissimo i test per loadData
++ Iniziare la ricerca semplice
+AGGIORNARE DIAGRAMMA DELLE CLASSI
