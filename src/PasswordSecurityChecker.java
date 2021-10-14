@@ -17,7 +17,7 @@ import java.util.Date;
  * @version 1.0 (30.09.2021)
  */
 
-public class PasswordSecurityChecker {
+public class PasswordSecurityChecker{
     private List<String> name;
     private int[] birth;
     private List<String> data;
@@ -26,6 +26,8 @@ public class PasswordSecurityChecker {
     private List<String> commons;
     private int tries;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private long start;
+    private long end;
 
     /**
      * Costruttore vuoto per poter istanziare un oggetto PasswordSecurityChecker
@@ -66,6 +68,12 @@ public class PasswordSecurityChecker {
                 System.err.println("Incorrect name\n");
                 break check;
             }
+
+            if(args[2].isBlank() || args[2].isEmpty()){
+                System.err.println("Missing third information\n");
+                break check;
+            }
+
             /**
              * Il controllo della validità della data di nascita viene eseguito nel metodo
              * loadData per evitare la ridondanza di codice
@@ -112,15 +120,27 @@ public class PasswordSecurityChecker {
 
     }
 
+    /**
+     * Il metodo tryPassword conntrolla se la password trovata è corretta
+     * @param elements lista di strighe che concatenate formano la password
+     */
     private void tryPassword(List<String> elements) {
         StringBuilder s = new StringBuilder();
         for (String string : elements) {
             s.append(string);
         }
         tries++;
-        if(s.toString().equals(password)){
+        tryPassword(s.toString());
+    }
+
+    /**
+     * Il metodo tryPassword conntrolla se la password trovata è corretta
+     * @param s stringa da controllare
+     */
+    private void tryPassword(String s){
+        if(s.equals(password)){
             // trovata
-            // stop al tempo
+            end = System.currentTimeMillis();
             // metodo finale
             System.out.println("ciao mondo");
         }
@@ -155,11 +175,15 @@ public class PasswordSecurityChecker {
         }  
     }
 
+    private static void displayResult(){
+
+    }
+
     public static void main(String[] args) {
         PasswordSecurityChecker psc = new PasswordSecurityChecker();
         // controllo argomenti già eseguito
         psc.loadData(args);
-        String[] arrayStrings = {"a", "b", "c", "d", "e", "f"};
+        String[] arrayStrings = {"a"};
         List<String> elements = Arrays.asList(arrayStrings);
         psc.tryAllPermutations(elements);
     }
