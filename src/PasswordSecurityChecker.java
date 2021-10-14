@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+
+import javax.lang.model.util.ElementScanner14;
+
 import java.util.Date;
 
 /**
@@ -19,7 +22,7 @@ public class PasswordSecurityChecker{
     private List<String> name;
     private int[] birth;
     private List<String> data;
-    private char[] specials;
+    private char[] specials = {'!','&', '?', '+', '%', '$', '-', '_'};
     private String password;
     private List<String> commons;
     private int tries;
@@ -56,7 +59,7 @@ public class PasswordSecurityChecker{
      */
     private boolean checkData(String[] args){
         check:
-        if(args.length >= 3){
+        if(args.length > 3){
             // controllo che non sia richiesto l'help
             for (String s : args) {
                 if(s.equals("-h") || s.equals("-help") || s.equals("h") 
@@ -66,7 +69,7 @@ public class PasswordSecurityChecker{
             }
             // controllo la validità del nome
             if(args[0].split(" ").length <= 1){
-                System.err.println("Incorrect name");
+                System.err.println("Incorrect name\n");
                 break check;
             }
             /**
@@ -74,6 +77,8 @@ public class PasswordSecurityChecker{
              * nel metodo loadData per evitare la ridondanza di codice
             */
             return true;
+        }else{
+            System.err.println("Missing arguments\n");
         }
         displayHelp();
         return false;
@@ -96,11 +101,13 @@ public class PasswordSecurityChecker{
                 birth[2] = c.get(Calendar.YEAR);
 
             } catch (ParseException pe) {
-                System.err.println("Incorrect birth date");
+                // controllo validità sulla data di nascita
+                System.err.println("Incorrect birth date\n");
                 displayHelp();
                 System.exit(0);
             }
             data = Arrays.asList(args[2].split(" "));
+            password = args[3];
         }
     }
 
@@ -110,9 +117,8 @@ public class PasswordSecurityChecker{
     }
     public static void main(String[] args) {
         PasswordSecurityChecker psc = new PasswordSecurityChecker();
+        // controllo argomenti già eseguito
         psc.loadData(args);
-        for (int i : psc.birth) {
-            System.out.println(i);
-        }
+        
     }
 }
