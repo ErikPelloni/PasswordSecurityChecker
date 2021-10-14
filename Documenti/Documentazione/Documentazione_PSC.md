@@ -327,6 +327,8 @@ stato una perdita di tempo? I risultati ottenuti sono generali,
 facilmente generalizzabili o sono specifici di un caso particolare? ecc
 
 ### Sviluppi futuri
+  + Aggiunta input password non in chiaro in modo interattivo
+  + Script per il passaggio dei dati
   + Aggiunta di un'interfaccia grafica
 
 ### Considerazioni personali
