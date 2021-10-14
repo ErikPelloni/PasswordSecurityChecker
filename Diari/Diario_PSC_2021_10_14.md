@@ -7,8 +7,8 @@
 
 |Orario        |Lavoro svolto                                                   |
 |--------------|----------------------------------------------------------------|
-|11:05 - 11:25 |Creazione nuovo diario                                          |
-|11:25 - 12:20 |Controllo validità dati input                                   |
+|11:05 - 11:40 |Test loadData e controllo input                                 |
+|11:25 - 12:20 |Iniziato algoritmo di ricerca "facile"                          |
 |13:20 - 14:25 |Controllo validità dati input                                   |
 |14:30 - 16:30 |Salvataggio dati input                                          |
 
@@ -19,6 +19,3 @@
 
 
 ## Programma di massima per la prossima giornata di lavoro
-+ Finire velocissimo i test per loadData
-+ Iniziare la ricerca semplice
-AGGIORNARE DIAGRAMMA DELLE CLASSI
