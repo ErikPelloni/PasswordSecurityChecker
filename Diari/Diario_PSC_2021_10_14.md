@@ -8,7 +8,7 @@
 |Orario        |Lavoro svolto                                                   |
 |--------------|----------------------------------------------------------------|
 |11:05 - 11:40 |Test loadData e controllo input                                 |
-|11:25 - 12:20 |Algoritmo di ricerca "facile"                                   |
+|11:40 - 16:30 |Algoritmo di ricerca "facile" e stampa dei risultati            |
 
 [//]: <> (##  Problemi riscontrati e soluzioni adottate)
 
