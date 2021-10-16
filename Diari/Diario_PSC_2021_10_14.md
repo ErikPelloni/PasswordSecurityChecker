@@ -14,6 +14,7 @@
 
 
 ##  Punto della situazione rispetto alla pianificazione
-
++ sono in linea con la progettazione
 
 ## Programma di massima per la prossima giornata di lavoro
++ finire il controllo semplice
