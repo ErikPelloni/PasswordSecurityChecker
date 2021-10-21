@@ -1,3 +1,6 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -117,36 +120,102 @@ public class PasswordSecurityChecker{
             data = Arrays.asList(args[2].split(" "));
             password = args[3];
         }
+        /*
+        // creo l'InputStreamReader per poter richiedere i dati in modo 
+        //interattivo
+        InputStreamReader input = new InputStreamReader(System.in);
+        // creo un BufferedReader collegato all'InputStreamReader
+		BufferedReader keyboard = new BufferedReader(input);
+		String nome;
+        try{
+			System.out.print("Insert your name: ");
+			nome = keyboard.readLine();
+			System.out.println("Buongiorno " + nome + ", benvenuto!");
+		}catch(IOException e){
+			System.out.println("Errore input!!");
+		}
+        */
+        // qui probabilmente userò la libreria di Paolo per dare nomi 
+        // agli argomenti passati con la cli
     }
 
     private void checkEasy(){
+        // faccio partire il tempo della ricerca
         start = System.currentTimeMillis();
+        
+        String firstName = name.get(0).toLowerCase();
+
         // controllo se la password è il nome o il cognome
         for (int i = 0; i < name.size(); i++) {
             tryPassword(name.get(i));
         }
+
         // controllo se la password è l'anno di nascita
         String birthYear = String.valueOf(birth[2]);
         tryPassword(birthYear);
+
+       /* questi controlli li metto nel "difficile"
         // controllo se la password è la data di nascita
         StringBuilder sb = new StringBuilder();
+        // formato 262004
+        for (int i = 0; i < 3; i++) {
+            sb.append(birth[i]);
+        }
+        System.out.println(sb);
+        tryPassword(sb.toString());
+        // formato 02062004
+        for (int i = 0; i < 3; i++) {
+            sb.append(birth[i]);
+        }
+        System.out.println(sb);
+        tryPassword(sb.toString());
+        // formato 2.6.2004
+        sb.setLength(0);
         for (int i = 0; i < 3; i++) {
             sb.append(birth[i]);
             sb.append(".");
         }
         sb.deleteCharAt(sb.length() - 1);
-        tryPassword(sb.toString());
+        System.out.println(sb);
+        tryPassword(sb.toString());*/
+
         // controllo le password con nome e anno di nascita
         List<String> nameYear = new ArrayList<>();
-        nameYear.add(name.get(0));
+        nameYear.add(firstName);
         nameYear.add(birthYear);
         tryAllPermutations(nameYear);
+
         // controllo le password con nome e ultime 2 cifre dell'anno di nascita
         nameYear.remove(1);
         nameYear.add(birthYear.substring(((int)Math.log10(birth[2])) - 1));
         tryAllPermutations(nameYear);
 
+        // controlli uguali agli ultimi 2 ma con il nome
+        // in maiuscolo (prima lettera)
+        nameYear.remove(0);
+        nameYear.add(firstName.substring(0, 1).toUpperCase() + 
+                    firstName.substring(1));
+        tryAllPermutations(nameYear);
+
+        // con l'anno intero
+        nameYear.remove(0);
+        nameYear.add(birthYear);
+        tryAllPermutations(nameYear);
     }
+
+    private void checkFrequent(){
+       try{
+            List<String> frequents = Files.readAllLines(
+                Paths.get("Documenti\\passwordComuni.txt"));
+             
+            for (String s : frequents) {
+                tryPassword(s);
+            }
+        }catch(IOException ioe){
+            System.err.println("Common passwords file reading error.");
+        }
+    }
+
 
     /** 
      * la base del seguente metodo è stata presa dal sito
@@ -179,6 +248,7 @@ public class PasswordSecurityChecker{
 
     /**
      * Il metodo tryPassword conntrolla se la password trovata è corretta
+     * concatenando tutti gli elementi presenti nella lista.
      * @param elements lista di strighe che concatenate formano la password
      */
     private void tryPassword(List<String> elements) {
@@ -203,25 +273,27 @@ public class PasswordSecurityChecker{
         }
     }
 
+
     /**
      * Il metodo displayResult stampa a terminale il risultato finale
      * dell'applicazione
      * @param isPasswordFound {@code true} se la password è stata trovata
      */
     private void displayResult(boolean isPasswordFound){
+        String s = "";
+        if(!isPasswordFound){
+            end = System.currentTimeMillis();
+            s = "not";
+        }
         long time = end - start;
-        System.out.println(time);
         long minutes = (time / 1000) / 60;
         int seconds = (int)(time / 1000) % 60;
         time -= (minutes * 60000 + seconds * 1000);
-        String s = "";
-        if(!isPasswordFound){
-            s = "not";
-        }
         System.out.println("Password " + s + " found in " + minutes + 
                             " minutes, " + seconds + " seconds, " + time +
                             " milliseconds and with " + tries + " tries");
 
+        System.exit(0);
     }
 
     public static void main(String[] args){
@@ -232,6 +304,7 @@ public class PasswordSecurityChecker{
         List<String> elements = Arrays.asList(arrayStrings);
         //System.out.println(elements);
         psc.checkEasy();
-        System.out.println(psc.tries);
+        psc.checkFrequent();
+        psc.displayResult(false);
     }
 }
