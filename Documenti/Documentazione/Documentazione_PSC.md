@@ -255,7 +255,7 @@ Questi documenti permetteranno di rappresentare i dettagli procedurali
 per la realizzazione del prodotto.
 
 ### Diagramma delle classi
-<img src="../PasswordSecurityChecker_Classe.png" alt="diagramma classe" width="400"/>
+<img src="../PasswordSecurityChecker_Classe.svg" alt="diagramma classe" width="400"/>
 
 ## Implementazione
 
