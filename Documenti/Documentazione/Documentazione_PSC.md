@@ -121,7 +121,7 @@
 
   |**ID**	|**Titolo**|**Descrizione**			|**Priorità**|**Vers**|**Note**  |
   |-------|----------|-------------|------------|--------|----------|
-  |Req-01 |Linea di comando|Il programma sarà eseguibile tramite linea di comando|1|1.0|...|
+  |Req-01|Linea di comando|Il programma sarà eseguibile tramite linea di comando|1|1.0|...|
   |Req-02 |Dati input|Al programma verranno passati i seguenti dati:<br>  nome e cognome, data di nascita e un terzo dato a propria scelta |1|1.0|...|
   |Req-03 |Controllo validità |Verrà eseguito un controllo della validità dei dati inseriti|1|1.0|...|
   |Req-04 |Help |Sarà possibile visualizzare un help che mostra il funzionamento del programma|1|1.0|...|
@@ -130,7 +130,7 @@
   |Req-07 |Controllo password frequenti|Verrà controllata una lista contenente delle password frequenti|1|1.0|...|
   |Req-08 |Brute force|Se la password non viene trovata con i controlli precedenti si prosegue con un attacco brute force, se l'utente lo decide|2|1.0|...|
   |Req-09 |Stampa valori|Vengono stampati i tentativi effettuati e il tempo impiegato|1|1.0|...|
-  |Req-10 |Script|Sarà possibile passare i dati a uno script tramite file csv, lo script invocherà automaticamente il programma|3|1.0|...|
+  |Req-10|Script|Sarà possibile passare i dati a uno script tramite file csv, lo script invocherà automaticamente il programma|3|1.0|...|
   
   
 
@@ -219,7 +219,8 @@ Lanciando l'applicazione si passano anche i dati necessari per il funzionmento.
  
  Una volta inseriti correttamente i dati il programma comincia a provare a forzare la password.
 
- In un primo momento vengono provate le combinazioni più semplici. Se la password viene trovata, il programma giunge a termine, se no si passa al controllo successivo.
+ In un primo momento vengono provate le combinazioni più semplici. Se la 
+ password viene trovata, il programma giunge a termine, se no si passa al controllo successivo.
 
  Il secondo controllo che viene effettuato è quello tra la password fornita e la lista di password più frequentemente utilizzate. Anche in questo caso la procedura di funzionamento del programma è la medesima: se la password viene trovata, il programma giunge a termine, se no si passa al controllo successivo.
 
@@ -294,7 +295,7 @@ ripetibile alle stesse condizioni.
 |**Descrizione**|Import a card with KIC, KID and KIK keys with no obfuscation, but not shown with the GUI |
 |**Prerequisiti**|Store on local PC: Profile\_1.2.001.xml (appendix n\_n) and Cards\_1.2.001.txt (appendix n\_n) |
 |**Procedura**     | - Go to “Cards manager” menu, in main page click “Import Profiles” link, Select the “1.2.001.xml” file, Import the Profile - Go to “Cards manager” menu, in main page click “Import Cards” link, Select the “1.2.001.txt” file, Delete the cards, Select the “1.2.001.txt” file, Import the cards |
-|**Risultati attesi** |Keys visible in the DB (OtaCardKey) but not visible in the GUI (Card details) |
+|**Risultati attesi**|Keys visible in the DB (OtaCardKey) but not visible in the GUI (Card details) |
 
 
 ### Risultati test
