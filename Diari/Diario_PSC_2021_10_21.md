@@ -22,3 +22,6 @@ ho dovuto cambiare la logica del funzionamento iniziale
 
 
 ## Programma di massima per la prossima giornata di lavoro
++ Aggiornamento del diagramma delle classi aggiungendo la classe di Paolo per la
+denominazione degli argomenti.
++ Integrazione di questa classe con il programma.
