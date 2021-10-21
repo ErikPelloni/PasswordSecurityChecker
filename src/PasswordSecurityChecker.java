@@ -1,5 +1,4 @@
 import java.text.SimpleDateFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -14,14 +13,14 @@ import java.util.Date;
  * tramite il confronto con una lista di password più comuni.
  * 
  * @author Erik Pelloni
- * @version 1.0 (14.10.2021)
+ * @version 1.0 (21.10.2021)
  */
 
 public class PasswordSecurityChecker{
     private List<String> name;
     private int[] birth;
     private List<String> data;
-    private char[] specials = { '!', '&', '?', '+', '%', '$', '-', '_', '@' };
+    private char[] specials = { '!', '&', '?', '+', '%', '$', '-', '_', '@'};
     private String password;
     private List<String> commons;
     private int tries;
@@ -120,7 +119,8 @@ public class PasswordSecurityChecker{
         }
     }
 
-    private void checkEasy() {
+    private void checkEasy(){
+        start = System.currentTimeMillis();
         // controllo se la password è il nome o il cognome
         for (int i = 0; i < name.size(); i++) {
             tryPassword(name.get(i));
@@ -141,13 +141,10 @@ public class PasswordSecurityChecker{
         nameYear.add(name.get(0));
         nameYear.add(birthYear);
         tryAllPermutations(nameYear);
-
         // controllo le password con nome e ultime 2 cifre dell'anno di nascita
         nameYear.remove(1);
-        // controllare
-        nameYear.add(birthYear.substring((int)Math.log(birth[2])));
-        // per substring trovare quel valore che
-        // 10 --> 0, 100 --> 1, 1000 --> 2
+        nameYear.add(birthYear.substring(((int)Math.log10(birth[2])) - 1));
+        tryAllPermutations(nameYear);
 
     }
 
@@ -161,14 +158,15 @@ public class PasswordSecurityChecker{
      * @param elements lista di stringhe da controllare
      */
     private void tryAllPermutations(List<String> elements){
-        int[] indexes = new int[elements.size()];
-        tryPassword(elements);
+        List<String> copy =  new ArrayList<>(elements);
+        int[] indexes = new int[copy.size()];
+        tryPassword(copy);
 
         int i = 0;
-        while (i < elements.size()) {
+        while (i < copy.size()) {
             if (indexes[i] < i) {
-                Collections.swap(elements, i % 2 == 0 ?  0 : indexes[i], i);
-                tryPassword(elements);
+                Collections.swap(copy, i % 2 == 0 ?  0 : indexes[i], i);
+                tryPassword(copy);
                 indexes[i]++;
                 i = 0;
             }
@@ -198,7 +196,7 @@ public class PasswordSecurityChecker{
     private void tryPassword(String s){
         tries++;
         if(s.equals(password)){
-            // trovata
+            // trovata, fermo il tempo di ricerca
             end = System.currentTimeMillis();
             // metodo finale
             displayResult(true);
@@ -212,6 +210,7 @@ public class PasswordSecurityChecker{
      */
     private void displayResult(boolean isPasswordFound){
         long time = end - start;
+        System.out.println(time);
         long minutes = (time / 1000) / 60;
         int seconds = (int)(time / 1000) % 60;
         time -= (minutes * 60000 + seconds * 1000);
@@ -225,12 +224,14 @@ public class PasswordSecurityChecker{
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         PasswordSecurityChecker psc = new PasswordSecurityChecker();
         // controllo argomenti già eseguito
         psc.loadData(args);
         String[] arrayStrings = {"a"};
         List<String> elements = Arrays.asList(arrayStrings);
-        System.out.println(elements);
+        //System.out.println(elements);
+        psc.checkEasy();
+        System.out.println(psc.tries);
     }
 }
