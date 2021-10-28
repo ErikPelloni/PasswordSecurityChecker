@@ -20,7 +20,7 @@
 
 1. [Progettazione](#progettazione)
 
-  - [Design dell’architettura del sistema](#design-dell’architettura-del-sistema)
+  - [Design dell’architettura del sistema](#design-dellarchitettura-del-sistema)
 
   - [Design procedurale](#design-procedurale)
 
