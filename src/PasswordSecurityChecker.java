@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Date;
+import utils.ParamHandler;
 
 /**
  * La classe PasswordSecurityChecker contiene i metodi per verificare, in base 
@@ -16,7 +17,7 @@ import java.util.Date;
  * tramite il confronto con una lista di password più comuni.
  * 
  * @author Erik Pelloni
- * @version 1.0 (21.10.2021)
+ * @version 1.0 (28.10.2021)
  */
 
 public class PasswordSecurityChecker{
@@ -30,27 +31,32 @@ public class PasswordSecurityChecker{
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     private long start;
     private long end;
+    private ParamHandler handler;
 
     /**
-     *Costruttore vuoto per poter istanziare un oggetto PasswordSecurityChecker
+     * Costruttore vuoto per poter istanziare un oggetto PasswordSecurityChecker
      */
     private PasswordSecurityChecker() {
         name = new ArrayList<>();
         data = new ArrayList<>();
         birth = new int[3];
         dateFormat.setLenient(false);
+        handler = new ParamHandler("-");
     }
 
     /**
      * Il metodo displayHelp stampa il messaggio di help a terminale
      */
-    private static void displayHelp() {
-        System.out.println("Password Security Checker\n\nUsage: " 
+    private void displayHelp() {
+        /*System.out.println("Password Security Checker\n\nUsage: " 
                             + "java PasswordSecurityChecker [<-h>] "
                             + "<\"name surname\"> <\"dd.mm.yyyy\">" 
                             + " <\"information\"> <\"password\">"
                             + "\n\nCheck the guide for more information " 
-                            + "about the program and formatting");
+                            + "about the program and formatting");*/
+        System.out.println(handler.help("PasswordSecurityChecker", 
+        "PasswordSecurityChecker tries to force your password based"+ 
+        " on the data passed as arguments."));
     }
 
     /**
@@ -60,7 +66,7 @@ public class PasswordSecurityChecker{
      * @param args argomenti passati da linea di comando
      * @return {@code true} se i dati passati sono corretti
      */
-    private boolean checkData(String[] args) {
+/*    private boolean checkData(String[] args) {
         check: if (args.length > 3) {
             // controllo che non sia richiesto l'help
             for (String s : args) {
@@ -84,13 +90,80 @@ public class PasswordSecurityChecker{
              * Il controllo della validità della data di nascita viene eseguito
              *  nel metodo loadData per evitare la ridondanza di codice
              */
-            return true;
+/*            return true;
         } else {
             System.err.println("Missing arguments\n");
         }
         displayHelp();
         return false;
+    }*/
+
+    /**
+     * Il metodo getData controlla se i dati passati da linea di comando sono
+     * validi.
+     * Se lo sono, allora salva i loro valori all'interno degli attributi
+     * della classe.
+     * Per farlo, utilizzo una libreria scritta da Paolo Bettelini, in modo
+     * da semplificare il controllo.
+     * 
+     * @param args argomenti passati da linea di comando
+     * @return {@code true} se i dati passati sono corretti
+     */
+    private void getData(String[] args){
+
+        //handler.addArg(argName, mandatory, type, properties);
+        handler.addFlag(
+			"h",
+			ParamHandler.propertyOf("Name", "Help"),
+			ParamHandler.propertyOf("Description", "Shows this message")
+		);
+
+        handler.addArg(
+			"name", false, "String",
+			ParamHandler.propertyOf("Name", "Name"),
+			ParamHandler.propertyOf("Description", "Name and Surname"),
+            ParamHandler.propertyOf("Format", "Name Surname"),
+            ParamHandler.propertyOf("Example", "John Doe")
+		);
+
+        handler.addArg(
+			"birth", false, "String",
+			ParamHandler.propertyOf("Name", "Birth date"),
+			ParamHandler.propertyOf("Description", "Your date of birth"),
+            ParamHandler.propertyOf("Format", "dd.mm.yyyy"),
+            ParamHandler.propertyOf("Example", "27.06.1970")
+		);
+
+        handler.addArg(
+			"info", false, "String",
+			ParamHandler.propertyOf("Name", "Third information"),
+			ParamHandler.propertyOf("Description", "An information of your choice"),
+            ParamHandler.propertyOf("Example", "Football"),
+			ParamHandler.propertyOf("Example", "Barry")
+		);
+
+        handler.addArg(
+			"password", true, "String",
+			ParamHandler.propertyOf("Name", "Password"),
+			ParamHandler.propertyOf("Description", "Your password")
+		);
+
+        try {
+			handler.parse(args);
+		} catch (IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+			return;
+		}
+
+		if (handler.getFlag("h")) {
+			displayHelp();
+			return;
+		}
+
+        name = Arrays.asList(args[0].split(" "));
+
     }
+
 
     /**
      * Il metodo loadData salva i valori passati come input all'interno degli
@@ -98,7 +171,7 @@ public class PasswordSecurityChecker{
      * 
      * @param args argomenti passati da linea di comando
      */
-    private void loadData(String[] args) {
+    /*private void loadData(String[] args) {
         if (checkData(args)) {
             name = Arrays.asList(args[0].split(" "));
             try {
@@ -120,24 +193,7 @@ public class PasswordSecurityChecker{
             data = Arrays.asList(args[2].split(" "));
             password = args[3];
         }
-        /*
-        // creo l'InputStreamReader per poter richiedere i dati in modo 
-        //interattivo
-        InputStreamReader input = new InputStreamReader(System.in);
-        // creo un BufferedReader collegato all'InputStreamReader
-		BufferedReader keyboard = new BufferedReader(input);
-		String nome;
-        try{
-			System.out.print("Insert your name: ");
-			nome = keyboard.readLine();
-			System.out.println("Buongiorno " + nome + ", benvenuto!");
-		}catch(IOException e){
-			System.out.println("Errore input!!");
-		}
-        */
-        // qui probabilmente userò la libreria di Paolo per dare nomi 
-        // agli argomenti passati con la cli
-    }
+    }*/
 
     private void checkEasy(){
         // faccio partire il tempo della ricerca
@@ -299,7 +355,7 @@ public class PasswordSecurityChecker{
     public static void main(String[] args){
         PasswordSecurityChecker psc = new PasswordSecurityChecker();
         // controllo argomenti già eseguito
-        psc.loadData(args);
+        psc.getData(args);
         String[] arrayStrings = {"a"};
         List<String> elements = Arrays.asList(arrayStrings);
         //System.out.println(elements);
