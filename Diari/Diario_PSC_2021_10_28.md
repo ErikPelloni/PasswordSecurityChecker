@@ -8,9 +8,9 @@
 |Orario        |Lavoro svolto                                                  |
 |--------------|---------------------------------------------------------------|
 |11:05 - 11:10 |Creazione nuovo diario e aggiornamento vari file               |
-|11:15 - 13:35 |Implementazione libreria parametri                             |
-|13:35 - 14:00 |Modifiche al diario e alla guida                               |
-|14:00 - 15:10 |Algoritmo di ricerca "facile"                                  |
+|11:15 - 13:30 |Implementazione libreria parametri                             |
+|13:30 - 13:35 |Piccola dimostrazione e demo del prodotto con il professore    |
+|13:35 - 15:10 |Implementazione libreria parametri                             |
 |14:00 - 15:10 |Ricerca di password frequenti                                  |
 |15:45 - 16:30 |Algoritmo password frequenti                                   |
 
