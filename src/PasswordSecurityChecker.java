@@ -21,25 +21,24 @@ import utils.ParamHandler;
  * @version 1.0 (28.10.2021)
  */
 
-public class PasswordSecurityChecker{
-    private List<String> name;
-    private int[] birth;
-    //private List<String> info;
-    private String info;
-    private char[] specials = { '!', '?', '+', '%', '$', '-', '_'};
-    private String password;
-    private List<String> commons;
-    private int tries;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-    private long start;
-    private long end;
+public class PasswordSecurityChecker {
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private static char[] specials = { '!', '?', '+', '%', '$', '-', '_'};
+
     private ParamHandler handler;
 
+    private List<String> name, commons;
+    //private List<String> info;
+    private int[] birth;
+    private int tries;
+    private long start, end;
+    private String info, password, firstName, birthYear;
+
     /**
-     * Costruttore vuoto per poter istanziare un oggetto PasswordSecurityChecker
+     * Costruttore per poter istanziare un oggetto PasswordSecurityChecker
      */
     private PasswordSecurityChecker() {
-        name = new ArrayList<>();
+        name = new ArrayList<>(2);
         //info = new ArrayList<>();
         birth = new int[3];
         dateFormat.setLenient(false);
@@ -48,17 +47,13 @@ public class PasswordSecurityChecker{
 
     /**
      * Il metodo displayHelp stampa il messaggio di help a terminale
+     * e termina il programma.
      */
     private void displayHelp() {
-        /*System.out.println("Password Security Checker\n\nUsage: " 
-                            + "java PasswordSecurityChecker [<-h>] "
-                            + "<\"name surname\"> <\"dd.mm.yyyy\">" 
-                            + " <\"information\"> <\"password\">"
-                            + "\n\nCheck the guide for more information " 
-                            + "about the program and formatting");*/
         System.out.println(handler.help("PasswordSecurityChecker", 
         "PasswordSecurityChecker tries to force your password based" + 
-        " on the data passed as arguments."));
+        " on the data passed as arguments." +
+        "\n\tCheck the guide for more information."));
         System.exit(0);
     }
     
@@ -111,26 +106,19 @@ public class PasswordSecurityChecker{
 			ParamHandler.propertyOf("Description", "Your password")
 		);
 
-        boolean flag = false;
-
         // salvo i dati all'interno dell'handler
         try {
 			handler.parse(args);
+            
+            // controllo se sono stati passati i parametri obbligatori
+            if (!handler.isComplete()) {
+                System.out.println(handler.getStatus());
+                System.exit(0);
+            }
 		} catch (IllegalArgumentException e) {
 			System.out.println(e.getMessage());
-            flag = true;
-		}
-
-        // controllo se sono stati passati i parametri obbligatori
-        if (!handler.isComplete()) {
-			System.out.println(handler.getStatus());
-            flag = true;
-		}
-
-        // se ci sono errori negli input, termino il programma.
-        if(flag){
             System.exit(0);
-        }
+		}
 
         // controllo se è stato richiesto l'help
 		if (handler.getFlag("h")) {
@@ -170,7 +158,7 @@ public class PasswordSecurityChecker{
         // faccio partire il tempo della ricerca
         start = System.currentTimeMillis();
         
-        String firstName = name.get(0).toLowerCase();
+        firstName = name.get(0).toLowerCase();
 
         // controllo se la password è il nome o il cognome
         for (int i = 0; i < name.size(); i++) {
@@ -178,7 +166,7 @@ public class PasswordSecurityChecker{
         }
 
         // controllo se la password è l'anno di nascita
-        String birthYear = String.valueOf(birth[2]);
+        birthYear = String.valueOf(birth[2]);
         tryPassword(birthYear);
 
         // controllo le password con nome e anno di nascita
@@ -227,20 +215,22 @@ public class PasswordSecurityChecker{
      * delle combinazioni più complesse tra i dati passati come input.
      */
     private void checkComplex(){
-        /* questi controlli li metto nel "difficile"
         // controllo se la password è la data di nascita
         StringBuilder sb = new StringBuilder();
         // formato 262004
         for (int i = 0; i < 3; i++) {
             sb.append(birth[i]);
         }
-        System.out.println(sb);
         tryPassword(sb.toString());
+        sb.setLength(0);
         // formato 02062004
         for (int i = 0; i < 3; i++) {
-            sb.append(birth[i]);
+            if(birth[i] < 10){
+                sb.append("0" + birth[i]);
+            }else{
+                sb.append(birth[i]);
+            }
         }
-        System.out.println(sb);
         tryPassword(sb.toString());
         // formato 2.6.2004
         sb.setLength(0);
@@ -249,8 +239,20 @@ public class PasswordSecurityChecker{
             sb.append(".");
         }
         sb.deleteCharAt(sb.length() - 1);
-        System.out.println(sb);
-        tryPassword(sb.toString());*/
+        tryPassword(sb.toString());
+        sb.setLength(0);
+        // formato 02.06.2004
+        for (int i = 0; i < 3; i++) {
+            if(birth[i] < 10){
+                sb.append("0" + birth[i]);
+            }else{
+                sb.append(birth[i]);
+            }
+            sb.append(".");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        tryPassword(sb.toString());
+        sb.setLength(0);
 
     }
 
@@ -342,6 +344,7 @@ public class PasswordSecurityChecker{
         //System.out.println(elements);
         psc.checkEasy();
         psc.checkFrequent();
+        psc.checkComplex();
         psc.displayResult(false);
     }
 }
