@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,8 +24,9 @@ import utils.ParamHandler;
 public class PasswordSecurityChecker{
     private List<String> name;
     private int[] birth;
-    private List<String> data;
-    private char[] specials = { '!', '&', '?', '+', '%', '$', '-', '_', '@'};
+    //private List<String> info;
+    private String info;
+    private char[] specials = { '!', '?', '+', '%', '$', '-', '_'};
     private String password;
     private List<String> commons;
     private int tries;
@@ -38,7 +40,7 @@ public class PasswordSecurityChecker{
      */
     private PasswordSecurityChecker() {
         name = new ArrayList<>();
-        data = new ArrayList<>();
+        //info = new ArrayList<>();
         birth = new int[3];
         dateFormat.setLenient(false);
         handler = new ParamHandler("-");
@@ -55,49 +57,11 @@ public class PasswordSecurityChecker{
                             + "\n\nCheck the guide for more information " 
                             + "about the program and formatting");*/
         System.out.println(handler.help("PasswordSecurityChecker", 
-        "PasswordSecurityChecker tries to force your password based"+ 
+        "PasswordSecurityChecker tries to force your password based" + 
         " on the data passed as arguments."));
+        System.exit(0);
     }
-
-    /**
-     * Il metodo checkData controlla se i dati passati da linea di comando sono
-     * validi
-     * 
-     * @param args argomenti passati da linea di comando
-     * @return {@code true} se i dati passati sono corretti
-     */
-/*    private boolean checkData(String[] args) {
-        check: if (args.length > 3) {
-            // controllo che non sia richiesto l'help
-            for (String s : args) {
-                if (s.equals("-h") || s.equals("-help") || s.equals("h") 
-                    || s.equals("help")) {
-                    break check;
-                }
-            }
-            // controllo la validità del nome
-            if (args[0].split(" ").length <= 1) {
-                System.err.println("Incorrect name\n");
-                break check;
-            }
-
-            if(args[2].isBlank() || args[2].isEmpty()){
-                System.err.println("Missing third information\n");
-                break check;
-            }
-            
-            /**
-             * Il controllo della validità della data di nascita viene eseguito
-             *  nel metodo loadData per evitare la ridondanza di codice
-             */
-/*            return true;
-        } else {
-            System.err.println("Missing arguments\n");
-        }
-        displayHelp();
-        return false;
-    }*/
-
+    
     /**
      * Il metodo getData controlla se i dati passati da linea di comando sono
      * validi.
@@ -107,7 +71,6 @@ public class PasswordSecurityChecker{
      * da semplificare il controllo.
      * 
      * @param args argomenti passati da linea di comando
-     * @return {@code true} se i dati passati sono corretti
      */
     private void getData(String[] args){
 
@@ -148,53 +111,61 @@ public class PasswordSecurityChecker{
 			ParamHandler.propertyOf("Description", "Your password")
 		);
 
+        boolean flag = false;
+
+        // salvo i dati all'interno dell'handler
         try {
 			handler.parse(args);
 		} catch (IllegalArgumentException e) {
 			System.out.println(e.getMessage());
-			return;
+            flag = true;
 		}
 
+        // controllo se sono stati passati i parametri obbligatori
+        if (!handler.isComplete()) {
+			System.out.println(handler.getStatus());
+            flag = true;
+		}
+
+        // se ci sono errori negli input, termino il programma.
+        if(flag){
+            System.exit(0);
+        }
+
+        // controllo se è stato richiesto l'help
 		if (handler.getFlag("h")) {
 			displayHelp();
-			return;
 		}
 
-        name = Arrays.asList(args[0].split(" "));
+        // assegno i valori agli attributi.
+        name = Arrays.asList(handler.getArg("name").split(" "));
 
+        try {
+            Date birthDate = dateFormat.parse(handler.getArg("birth"));
+            Calendar c = Calendar.getInstance();
+            c.setTime(birthDate);
+            birth[0] = c.get(Calendar.DAY_OF_MONTH);
+            birth[1] = c.get(Calendar.MONTH) + 1;
+            birth[2] = c.get(Calendar.YEAR);
+            if(birth[2] < 1000){
+                throw new IllegalArgumentException();
+            }
+        } catch (ParseException | IllegalArgumentException ex){
+            // controllo validità sulla data di nascita
+            System.err.println("Incorrect birth date\n");
+            displayHelp();
+        }
+
+        // se info fosse una lista 
+        // ↳ info = Arrays.asList(handler.getArg("info").split(" "));
+        info = handler.getArg("info").trim().split(" ")[0];
+        password = handler.getArg("password");
     }
 
-
     /**
-     * Il metodo loadData salva i valori passati come input all'interno degli
-     * attributi dell'oggetto PasswordSecurityChecker
-     * 
-     * @param args argomenti passati da linea di comando
+     * Il metodo checkEasy prova a trovare la password utilizzando i dati
+     * passati come input e semplici combinazioni tra quest'ultimi.
      */
-    /*private void loadData(String[] args) {
-        if (checkData(args)) {
-            name = Arrays.asList(args[0].split(" "));
-            try {
-                Date birthDate = dateFormat.parse(args[1]);
-                Calendar c = Calendar.getInstance();
-                c.setTime(birthDate);
-                birth[0] = c.get(Calendar.DAY_OF_MONTH);
-                birth[1] = c.get(Calendar.MONTH) + 1;
-                birth[2] = c.get(Calendar.YEAR);
-                if(birth[2] < 1000){
-                    throw new IllegalArgumentException();
-                }
-            } catch (Exception e){
-                // controllo validità sulla data di nascita
-                System.err.println("Incorrect birth date\n");
-                displayHelp();
-                System.exit(0);
-            }
-            data = Arrays.asList(args[2].split(" "));
-            password = args[3];
-        }
-    }*/
-
     private void checkEasy(){
         // faccio partire il tempo della ricerca
         start = System.currentTimeMillis();
@@ -209,31 +180,6 @@ public class PasswordSecurityChecker{
         // controllo se la password è l'anno di nascita
         String birthYear = String.valueOf(birth[2]);
         tryPassword(birthYear);
-
-       /* questi controlli li metto nel "difficile"
-        // controllo se la password è la data di nascita
-        StringBuilder sb = new StringBuilder();
-        // formato 262004
-        for (int i = 0; i < 3; i++) {
-            sb.append(birth[i]);
-        }
-        System.out.println(sb);
-        tryPassword(sb.toString());
-        // formato 02062004
-        for (int i = 0; i < 3; i++) {
-            sb.append(birth[i]);
-        }
-        System.out.println(sb);
-        tryPassword(sb.toString());
-        // formato 2.6.2004
-        sb.setLength(0);
-        for (int i = 0; i < 3; i++) {
-            sb.append(birth[i]);
-            sb.append(".");
-        }
-        sb.deleteCharAt(sb.length() - 1);
-        System.out.println(sb);
-        tryPassword(sb.toString());*/
 
         // controllo le password con nome e anno di nascita
         List<String> nameYear = new ArrayList<>();
@@ -259,6 +205,10 @@ public class PasswordSecurityChecker{
         tryAllPermutations(nameYear);
     }
 
+    /**
+     * Il metodo checkFrequent controlla se la password si trova all'interno del
+     * file contenente 1 milione di password più frequentemente utilizzate.
+     */
     private void checkFrequent(){
        try{
             List<String> frequents = Files.readAllLines(
@@ -272,6 +222,37 @@ public class PasswordSecurityChecker{
         }
     }
 
+    /**
+     * Il metodo checkComplex prova a trovare la password utilizzando 
+     * delle combinazioni più complesse tra i dati passati come input.
+     */
+    private void checkComplex(){
+        /* questi controlli li metto nel "difficile"
+        // controllo se la password è la data di nascita
+        StringBuilder sb = new StringBuilder();
+        // formato 262004
+        for (int i = 0; i < 3; i++) {
+            sb.append(birth[i]);
+        }
+        System.out.println(sb);
+        tryPassword(sb.toString());
+        // formato 02062004
+        for (int i = 0; i < 3; i++) {
+            sb.append(birth[i]);
+        }
+        System.out.println(sb);
+        tryPassword(sb.toString());
+        // formato 2.6.2004
+        sb.setLength(0);
+        for (int i = 0; i < 3; i++) {
+            sb.append(birth[i]);
+            sb.append(".");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        System.out.println(sb);
+        tryPassword(sb.toString());*/
+
+    }
 
     /** 
      * la base del seguente metodo è stata presa dal sito
@@ -329,7 +310,6 @@ public class PasswordSecurityChecker{
         }
     }
 
-
     /**
      * Il metodo displayResult stampa a terminale il risultato finale
      * dell'applicazione
@@ -355,6 +335,7 @@ public class PasswordSecurityChecker{
     public static void main(String[] args){
         PasswordSecurityChecker psc = new PasswordSecurityChecker();
         // controllo argomenti già eseguito
+        //psc.loadData(args);
         psc.getData(args);
         String[] arrayStrings = {"a"};
         List<String> elements = Arrays.asList(arrayStrings);
