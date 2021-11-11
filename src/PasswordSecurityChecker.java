@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.BreakIterator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,6 +8,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+
 import java.util.Date;
 import utils.ParamHandler;
 
@@ -224,21 +224,19 @@ public class PasswordSecurityChecker {
             System.err.println("Common passwords file reading error.");
         }
     }
-
+        
     /**
      * Il metodo checkComplex prova a trovare la password utilizzando 
      * delle combinazioni più complesse tra i dati passati come input.
      */
     private void checkComplex(){
         StringBuilder sb = new StringBuilder();
-        System.out.println(name.get(0).substring(0,name.get(0).length()));
+
         // controllo combinazioni di substring tra nome e cognome
-        if(!name.isEmpty()){
-            for (int i = 1; i < name.get(0).length(); i++) {
-                sb.setLength(0);
-                //sb.append(name.get());
-            }
-        }
+        checkNameCombination(true, false, false);
+        
+        // stesso controllo ma con il cognome prima del nome
+        checkNameCombination(false, false, false);
 
         // controllo se la password è la data di nascita
         if(birth[0] != 0){
@@ -278,9 +276,65 @@ public class PasswordSecurityChecker {
             sb.deleteCharAt(sb.length() - 1);
             tryPassword(sb.toString());
             sb.setLength(0);
+            // combinazioni di substring tra nome e cognome e anno di nasicta
+            checkNameCombination(true, true, false);
+            // combinazioni di substring tra cognome e nome e anno di nasicta
+            checkNameCombination(false, true, false);
+            // substring tra nome e cognome e ultime 2 cifre anno di nascita
+            checkNameCombination(true, false, true);
+            // substring tra vognome e nome e ultime 2 cifre anno di nascita
+            checkNameCombination(false, false, true);
         }
 
     }
+
+    /**
+     * Il metodo checkNameCombination controllo combinazioni di substring 
+     * tra nome e cognome.
+     * @param first se {@code true} sarà messo prima il nome, se {@code false}
+     * sarà messo prima il cognome
+     * @param fullBirthYear se {@code true} verrà aggiunto al controllo anche
+     * l'anno di nascita completo
+     * @param last2Digits se {@code true} verranno agiunte al controllo anche
+     * le ultime due cifre dell'anno di nascita
+     * Attenzione! Se {@code fullBirthYear} è {@code true} {@code last2Digits}
+     * verrà considerato false.
+     */
+    private void checkNameCombination(boolean nameFirst, boolean fullBirthYear,
+                                        boolean last2Digits){
+        int first = 0;
+        int second = 0;
+        if(nameFirst){
+            second = 1;
+        }else{
+            first = 1;
+        }
+        String last2 = birthYear.substring(((int)Math.log10(birth[2])) - 1);
+        StringBuilder sb = new StringBuilder();        
+        if(!name.isEmpty()){
+            for (int i = 1; i <= name.get(first).length(); i++) {
+                sb.setLength(0);
+                sb.append(name.get(first).substring(0,i));
+                for (int j = 1; j <= name.get(second).length(); j++) {
+                    sb.replace(i, i+j, "");
+                    sb.append(name.get(second).substring(0,j));
+
+                    if(fullBirthYear){
+                        sb.append(birthYear);
+                        tryPassword(sb.toString());
+                        sb.setLength(sb.length() - birthYear.length());
+                    }else if(last2Digits){
+                        sb.append(last2);
+                        tryPassword(sb.toString());
+                        sb.setLength(sb.length() - 2);;
+                    }else{
+                       tryPassword(sb.toString());
+                    }
+                }
+            }
+        }
+    }
+
 
     /** 
      * la base del seguente metodo è stata presa dal sito
