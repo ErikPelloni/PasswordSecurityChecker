@@ -176,34 +176,36 @@ public class PasswordSecurityChecker {
             for (int i = 0; i < name.size(); i++) {
                 tryPassword(name.get(i));
             }
+            if(birth[0] != 0){
+                // controllo le password con nome e anno di nascita
+                List<String> nameYear = new ArrayList<>();
+                nameYear.add(firstName);
+                nameYear.add(birthYear);
+                tryAllPermutations(nameYear);
+        
+                // controllo le password con nome e ultime 2 cifre dell'anno di nascita
+                nameYear.remove(1);
+                nameYear.add(birthYear.substring(((int)Math.log10(birth[2])) - 1));
+                tryAllPermutations(nameYear);
+        
+                // controlli uguali agli ultimi 2 ma con il nome
+                // in maiuscolo (prima lettera)
+                nameYear.remove(0);
+                nameYear.add(firstName.substring(0, 1).toUpperCase() + 
+                            firstName.substring(1));
+                tryAllPermutations(nameYear);
+        
+                // con l'anno intero
+                nameYear.remove(0);
+                nameYear.add(birthYear);
+                tryAllPermutations(nameYear);
+            }
         }
 
         if(birth[0] != 0){            
             // controllo se la password è l'anno di nascita
             birthYear = String.valueOf(birth[2]);
             tryPassword(birthYear);
-            // controllo le password con nome e anno di nascita
-            List<String> nameYear = new ArrayList<>();
-            nameYear.add(firstName);
-            nameYear.add(birthYear);
-            tryAllPermutations(nameYear);
-    
-            // controllo le password con nome e ultime 2 cifre dell'anno di nascita
-            nameYear.remove(1);
-            nameYear.add(birthYear.substring(((int)Math.log10(birth[2])) - 1));
-            tryAllPermutations(nameYear);
-    
-            // controlli uguali agli ultimi 2 ma con il nome
-            // in maiuscolo (prima lettera)
-            nameYear.remove(0);
-            nameYear.add(firstName.substring(0, 1).toUpperCase() + 
-                        firstName.substring(1));
-            tryAllPermutations(nameYear);
-    
-            // con l'anno intero
-            nameYear.remove(0);
-            nameYear.add(birthYear);
-            tryAllPermutations(nameYear);
         }
 
     }
@@ -232,11 +234,13 @@ public class PasswordSecurityChecker {
     private void checkComplex(){
         StringBuilder sb = new StringBuilder();
 
-        // controllo combinazioni di substring tra nome e cognome
-        checkNameCombination(true, false, false);
-        
-        // stesso controllo ma con il cognome prima del nome
-        checkNameCombination(false, false, false);
+        if(!name.isEmpty()){
+            // controllo combinazioni di substring tra nome e cognome
+            checkNameCombination(true, false, false);
+            
+            // stesso controllo ma con il cognome prima del nome
+            checkNameCombination(false, false, false);
+        }
 
         // controllo se la password è la data di nascita
         if(birth[0] != 0){
@@ -276,16 +280,34 @@ public class PasswordSecurityChecker {
             sb.deleteCharAt(sb.length() - 1);
             tryPassword(sb.toString());
             sb.setLength(0);
-            // combinazioni di substring tra nome e cognome e anno di nasicta
-            checkNameCombination(true, true, false);
-            // combinazioni di substring tra cognome e nome e anno di nasicta
-            checkNameCombination(false, true, false);
-            // substring tra nome e cognome e ultime 2 cifre anno di nascita
-            checkNameCombination(true, false, true);
-            // substring tra vognome e nome e ultime 2 cifre anno di nascita
-            checkNameCombination(false, false, true);
+            if(!name.isEmpty()){   
+                // combinazioni di substring tra nome e cognome e anno di nasicta
+                checkNameCombination(true, true, false);
+                // combinazioni di substring tra cognome e nome e anno di nasicta
+                checkNameCombination(false, true, false);
+                // substring tra nome e cognome e ultime 2 cifre anno di nascita
+                checkNameCombination(true, false, true);
+                // substring tra vognome e nome e ultime 2 cifre anno di nascita
+                checkNameCombination(false, false, true);
+            }
         }
 
+    }
+
+
+    private void checkBrute() {
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        char[] array = {'a', 'b', 'c'};
+        while(i != array.length){
+            System.out.println("dio");
+            for (char c : array) {
+                sb.append(c);
+                System.out.println(sb);
+                sb.setLength(i);
+            }
+            i++;
+        }
     }
 
     /**
@@ -309,7 +331,9 @@ public class PasswordSecurityChecker {
         }else{
             first = 1;
         }
-        String last2 = birthYear.substring(((int)Math.log10(birth[2])) - 1);
+        String last2 = "";
+        if(last2Digits)
+            last2 = birthYear.substring(((int)Math.log10(birth[2])) - 1);
         StringBuilder sb = new StringBuilder();        
         if(!name.isEmpty()){
             for (int i = 1; i <= name.get(first).length(); i++) {
@@ -401,13 +425,13 @@ public class PasswordSecurityChecker {
         String s = "";
         if(!isPasswordFound){
             end = System.currentTimeMillis();
-            s = "not";
+            s = "not ";
         }
         long time = end - start;
         long minutes = (time / 1000) / 60;
         int seconds = (int)(time / 1000) % 60;
         time -= (minutes * 60000 + seconds * 1000);
-        System.out.println("Password " + s + " found in " + minutes + 
+        System.out.println("Password " + s + "found in " + minutes + 
                             " minutes, " + seconds + " seconds, " + time +
                             " milliseconds and with " + tries + " tries");
 
@@ -418,14 +442,14 @@ public class PasswordSecurityChecker {
         PasswordSecurityChecker psc = new PasswordSecurityChecker();
         // controllo argomenti già eseguito
         //psc.loadData(args);
-        psc.getData(args);
+        //psc.getData(args);
         /*String[] arrayStrings = {"a"};
         List<String> elements = Arrays.asList(arrayStrings);*/
         //System.out.println(elements);
-        //if()
-        psc.checkEasy();
-        psc.checkFrequent();
-        psc.checkComplex();
-        psc.displayResult(false);
+        // psc.checkEasy();
+        // psc.checkFrequent();
+        // psc.checkComplex();
+        psc.checkBrute();
+        //psc.displayResult(false);
     }
 }
