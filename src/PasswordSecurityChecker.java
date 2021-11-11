@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.BreakIterator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import utils.ParamHandler;
  * tramite il confronto con una lista di password più comuni.
  * 
  * @author Erik Pelloni
- * @version 1.0 (28.10.2021)
+ * @version 1.0 (11.11.2021)
  */
 
 public class PasswordSecurityChecker {
@@ -109,6 +110,11 @@ public class PasswordSecurityChecker {
         // salvo i dati all'interno dell'handler
         try {
 			handler.parse(args);
+
+            // controllo se è stato richiesto l'help
+    		if (handler.getFlag("h")) {
+			displayHelp();
+	    	}
             
             // controllo se sono stati passati i parametri obbligatori
             if (!handler.isComplete()) {
@@ -120,33 +126,39 @@ public class PasswordSecurityChecker {
             System.exit(0);
 		}
 
-        // controllo se è stato richiesto l'help
-		if (handler.getFlag("h")) {
-			displayHelp();
-		}
-
         // assegno i valori agli attributi.
-        name = Arrays.asList(handler.getArg("name").split(" "));
+        if(handler.getArg("name") == null){
+            name = new ArrayList<>(0);
+        }else{
+            name = Arrays.asList(handler.getArg("name").split(" "));
+        }
 
-        try {
-            Date birthDate = dateFormat.parse(handler.getArg("birth"));
-            Calendar c = Calendar.getInstance();
-            c.setTime(birthDate);
-            birth[0] = c.get(Calendar.DAY_OF_MONTH);
-            birth[1] = c.get(Calendar.MONTH) + 1;
-            birth[2] = c.get(Calendar.YEAR);
-            if(birth[2] < 1000){
-                throw new IllegalArgumentException();
+        if(handler.getArg("birth") != null){
+            try {
+                Date birthDate = dateFormat.parse(handler.getArg("birth"));
+                Calendar c = Calendar.getInstance();
+                c.setTime(birthDate);
+                birth[0] = c.get(Calendar.DAY_OF_MONTH);
+                birth[1] = c.get(Calendar.MONTH) + 1;
+                birth[2] = c.get(Calendar.YEAR);
+                if(birth[2] < 1000){
+                    throw new IllegalArgumentException();
+                }
+            } catch (ParseException | IllegalArgumentException ex){
+                // controllo validità sulla data di nascita
+                System.err.println("Incorrect birth date\n");
+                displayHelp();
             }
-        } catch (ParseException | IllegalArgumentException ex){
-            // controllo validità sulla data di nascita
-            System.err.println("Incorrect birth date\n");
-            displayHelp();
         }
 
         // se info fosse una lista 
         // ↳ info = Arrays.asList(handler.getArg("info").split(" "));
-        info = handler.getArg("info").trim().split(" ")[0];
+        if(handler.getArg("info") == null){
+            info = "";
+        }else{
+            info = handler.getArg("info").trim().split(" ")[0];
+        }
+        // su questa stringa non faccio il controllo perché è obbligatoria
         password = handler.getArg("password");
     }
 
@@ -157,40 +169,43 @@ public class PasswordSecurityChecker {
     private void checkEasy(){
         // faccio partire il tempo della ricerca
         start = System.currentTimeMillis();
-        
-        firstName = name.get(0).toLowerCase();
 
-        // controllo se la password è il nome o il cognome
-        for (int i = 0; i < name.size(); i++) {
-            tryPassword(name.get(i));
+        if(!name.isEmpty()){            
+            firstName = name.get(0).toLowerCase();
+            // controllo se la password è il nome o il cognome
+            for (int i = 0; i < name.size(); i++) {
+                tryPassword(name.get(i));
+            }
         }
 
-        // controllo se la password è l'anno di nascita
-        birthYear = String.valueOf(birth[2]);
-        tryPassword(birthYear);
+        if(birth[0] != 0){            
+            // controllo se la password è l'anno di nascita
+            birthYear = String.valueOf(birth[2]);
+            tryPassword(birthYear);
+            // controllo le password con nome e anno di nascita
+            List<String> nameYear = new ArrayList<>();
+            nameYear.add(firstName);
+            nameYear.add(birthYear);
+            tryAllPermutations(nameYear);
+    
+            // controllo le password con nome e ultime 2 cifre dell'anno di nascita
+            nameYear.remove(1);
+            nameYear.add(birthYear.substring(((int)Math.log10(birth[2])) - 1));
+            tryAllPermutations(nameYear);
+    
+            // controlli uguali agli ultimi 2 ma con il nome
+            // in maiuscolo (prima lettera)
+            nameYear.remove(0);
+            nameYear.add(firstName.substring(0, 1).toUpperCase() + 
+                        firstName.substring(1));
+            tryAllPermutations(nameYear);
+    
+            // con l'anno intero
+            nameYear.remove(0);
+            nameYear.add(birthYear);
+            tryAllPermutations(nameYear);
+        }
 
-        // controllo le password con nome e anno di nascita
-        List<String> nameYear = new ArrayList<>();
-        nameYear.add(firstName);
-        nameYear.add(birthYear);
-        tryAllPermutations(nameYear);
-
-        // controllo le password con nome e ultime 2 cifre dell'anno di nascita
-        nameYear.remove(1);
-        nameYear.add(birthYear.substring(((int)Math.log10(birth[2])) - 1));
-        tryAllPermutations(nameYear);
-
-        // controlli uguali agli ultimi 2 ma con il nome
-        // in maiuscolo (prima lettera)
-        nameYear.remove(0);
-        nameYear.add(firstName.substring(0, 1).toUpperCase() + 
-                    firstName.substring(1));
-        tryAllPermutations(nameYear);
-
-        // con l'anno intero
-        nameYear.remove(0);
-        nameYear.add(birthYear);
-        tryAllPermutations(nameYear);
     }
 
     /**
@@ -215,44 +230,55 @@ public class PasswordSecurityChecker {
      * delle combinazioni più complesse tra i dati passati come input.
      */
     private void checkComplex(){
-        // controllo se la password è la data di nascita
         StringBuilder sb = new StringBuilder();
-        // formato 262004
-        for (int i = 0; i < 3; i++) {
-            sb.append(birth[i]);
-        }
-        tryPassword(sb.toString());
-        sb.setLength(0);
-        // formato 02062004
-        for (int i = 0; i < 3; i++) {
-            if(birth[i] < 10){
-                sb.append("0" + birth[i]);
-            }else{
-                sb.append(birth[i]);
+        System.out.println(name.get(0).substring(0,name.get(0).length()));
+        // controllo combinazioni di substring tra nome e cognome
+        if(!name.isEmpty()){
+            for (int i = 1; i < name.get(0).length(); i++) {
+                sb.setLength(0);
+                //sb.append(name.get());
             }
         }
-        tryPassword(sb.toString());
-        // formato 2.6.2004
-        sb.setLength(0);
-        for (int i = 0; i < 3; i++) {
-            sb.append(birth[i]);
-            sb.append(".");
-        }
-        sb.deleteCharAt(sb.length() - 1);
-        tryPassword(sb.toString());
-        sb.setLength(0);
-        // formato 02.06.2004
-        for (int i = 0; i < 3; i++) {
-            if(birth[i] < 10){
-                sb.append("0" + birth[i]);
-            }else{
+
+        // controllo se la password è la data di nascita
+        if(birth[0] != 0){
+            // formato 262004
+            for (int i = 0; i < 3; i++) {
                 sb.append(birth[i]);
             }
-            sb.append(".");
+            tryPassword(sb.toString());
+            sb.setLength(0);
+            // formato 02062004
+            for (int i = 0; i < 3; i++) {
+                if(birth[i] < 10){
+                    sb.append("0" + birth[i]);
+                }else{
+                    sb.append(birth[i]);
+                }
+            }
+            tryPassword(sb.toString());
+            // formato 2.6.2004
+            sb.setLength(0);
+            for (int i = 0; i < 3; i++) {
+                sb.append(birth[i]);
+                sb.append(".");
+            }
+            sb.deleteCharAt(sb.length() - 1);
+            tryPassword(sb.toString());
+            sb.setLength(0);
+            // formato 02.06.2004
+            for (int i = 0; i < 3; i++) {
+                if(birth[i] < 10){
+                    sb.append("0" + birth[i]);
+                }else{
+                    sb.append(birth[i]);
+                }
+                sb.append(".");
+            }
+            sb.deleteCharAt(sb.length() - 1);
+            tryPassword(sb.toString());
+            sb.setLength(0);
         }
-        sb.deleteCharAt(sb.length() - 1);
-        tryPassword(sb.toString());
-        sb.setLength(0);
 
     }
 
@@ -339,9 +365,10 @@ public class PasswordSecurityChecker {
         // controllo argomenti già eseguito
         //psc.loadData(args);
         psc.getData(args);
-        String[] arrayStrings = {"a"};
-        List<String> elements = Arrays.asList(arrayStrings);
+        /*String[] arrayStrings = {"a"};
+        List<String> elements = Arrays.asList(arrayStrings);*/
         //System.out.println(elements);
+        //if()
         psc.checkEasy();
         psc.checkFrequent();
         psc.checkComplex();
