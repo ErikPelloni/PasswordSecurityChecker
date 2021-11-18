@@ -64,7 +64,8 @@
   -   **Background/Situazione iniziale**:
   Un utente vuole controllare la sicurezza della propria password.
 
-  -   **Descrizione del problema e motivazione**: Il programma, nel modo spiegato seguentemente permette di verificare il grado di sicurezza della password in base a dei dati personali. È importante utilizzare delle password efficaci in modo da evitare il furto di account o dati.
+  -   **Descrizione del problema e motivazione**: 
+  Il programma, nel modo spiegato seguentemente permette di verificare il grado di sicurezza della password in base a dei dati personali. È importante utilizzare delle password efficaci in modo da evitare il furto di account o dati.
 
   -   **Approccio/Metodi**: Sulla base di alcuni dati personali passati al programma, quest'ultimo proverà a scoprire la password.
 
@@ -108,7 +109,7 @@
 
   -   La funzione del prodotto è quella di controllare la sicurezza di una password, cercando di trovarla utilizzando dei dati relativi alla persona.
 
-  -   Il prodotto è eseguiibile tramite linea di comando e stampa i risultati a terminale.
+  -   Il prodotto è eseguibile tramite linea di comando e stampa i risultati a terminale.
 
   -  I dati verranno utilizzati unicamente per il funzionamento del programma e vengono eliminati una volta completata l'operazione.
 
@@ -130,13 +131,13 @@
   |Req-07 |Controllo password frequenti|Verrà controllata una lista contenente delle password frequenti|1|1.0|...|
   |Req-08 |Brute force|Se la password non viene trovata con i controlli precedenti si prosegue con un attacco brute force, se l'utente lo decide|2|1.0|...|
   |Req-09 |Stampa valori|Vengono stampati i tentativi effettuati e il tempo impiegato|1|1.0|...|
-  |Req-10|Script|Sarà possibile passare i dati a uno script tramite file csv, lo script invocherà automaticamente il programma|3|1.0|...|
+  |Req-10|Script|Sarà possibile passare i dati a uno script tramite file csv, lo script invocherà automaticamente il programma|3|1.1|Da vedere se conviene|
   
   
 
 
 
-**Spiegazione elementi tabella dei requisiti:**
+**Legenda elementi tabella dei requisiti:**
 
 **ID**: identificativo univoco del requisito
 
@@ -174,24 +175,22 @@ L'utente è in grado (tramite linea di comando) di verificare la sicurezza della
 #### Gantt consuntivo
 
 ### Analisi dei mezzi
+Per la creazione del progetto è stato utilizzato un PC con windows 10, Java e
+Visual Studio Code, non ci sono altri requisiti a livello hardware per la 
+creazione e lo svolgimento di questo progetto.
 
-Elencare e *descrivere* i mezzi disponibili per la realizzazione del
-progetto. Ricordarsi di sempre descrivere nel dettaglio le versioni e il
-modello di riferimento.
+È stata utilizzata una libreria scritta da Paolo Bettelini, che permette una
+migliore gestione dei parametri passati come argomenti da linea di comando.
 
-SDK, librerie, tools utilizzati per la realizzazione del progetto e
-eventuali dipendenze.
-
-Su quale piattaforma dovrà essere eseguito il prodotto? Che hardware
-particolare è coinvolto nel progetto? Che particolarità e limitazioni
-presenta? Che hw sarà disponibile durante lo sviluppo?
+Il prodotto potrà essere eseguito su un qualsiasi dispositivo che abbia Java
+installato, indipendentemente dal sistema operativo.
 
 ## Progettazione
 
 Questo capitolo descrive esaustivamente come deve essere realizzato il
-prodotto fin nei suoi dettagli. Una buona progettazione permette
+prodotto fin nei suoi dettagli. (Una buona progettazione permette
 all’esecutore di evitare fraintendimenti e imprecisioni
-nell’implementazione del prodotto.
+nell’implementazione del prodotto.)
 
 ### Design dell’architettura del sistema
 
@@ -214,19 +213,19 @@ nell’implementazione del prodotto.
 
 #### Descrizione
 
-Lanciando l'applicazione si passano anche i dati necessari per il funzionmento.
- <br>Se le informazioni non sono passate nel modo corretto o se l'utente ha scento di visualizzare l'help, l'applicazione mostra l'help (che spiega la formattazine dei valori di input) e chiede nuovamente di inserire i dati.
+Lanciando l'applicazione si passano i dati necessari per il funzionmento.
+<br>Se le informazioni non sono passate nel modo corretto o se l'utente ha scento di visualizzare l'help, l'applicazione mostra l'help (che spiega la formattazine dei valori di input).
  
- Una volta inseriti correttamente i dati il programma comincia a provare a forzare la password.
+Una volta inseriti correttamente i dati il programma comincia a provare a forzare la password.
 
- In un primo momento vengono provate le combinazioni più semplici. Se la 
- password viene trovata, il programma giunge a termine, se no si passa al controllo successivo.
++ In un primo momento vengono provate le combinazioni più semplici. Se la 
+password viene trovata, il programma giunge a termine, se no si passa al controllo successivo.
 
- Il secondo controllo che viene effettuato è quello tra la password fornita e la lista di password più frequentemente utilizzate. Anche in questo caso la procedura di funzionamento del programma è la medesima: se la password viene trovata, il programma giunge a termine, se no si passa al controllo successivo.
++ Il secondo controllo che viene effettuato è quello tra la password fornita e una lista di password frequentemente utilizzate. Anche in questo caso la procedura di funzionamento del programma è la medesima: se la password viene trovata, il programma giunge a termine, se no si passa al controllo successivo.
 
-Se la password non è presente nemmeno all'interno della lista, il controllo da compiere è quello delle combinazioni più complesse. Nuovamente la procedura finale è la stessa.
++ Se la password non è presente nemmeno all'interno della lista, il controllo da compiere è quello delle combinazioni più complesse. Nuovamente la procedura finale è la stessa.
 
-Infine, se l'utente ha deciso di effettuarla, l'ultima ricerca effettuata è quella brute force. Una volta trovata la password o raggiunto l'eventuale limite (di tempo o di tentativi, stabilito dll'utente) il programma giunge al termine e stampa l'output finale.
++ Infine, se l'utente ha deciso di effettuarla, l'ultima ricerca effettuata è quella brute force. Una volta trovata la password o raggiunto l'eventuale limite (di tempo o di tentativi, stabilito dll'utente) il programma giunge al termine e stampa l'output finale.
 <br> <br>
 
 ### Design delle interfacce
@@ -235,8 +234,6 @@ Descrizione delle interfacce interne ed esterne del sistema e
 dell’interfaccia utente. La progettazione delle interfacce è basata
 sulle informazioni ricavate durante la fase di analisi e realizzata
 tramite mockups.
-
-
 
 Descrive i concetti dettagliati dell’architettura/sviluppo utilizzando
 ad esempio:

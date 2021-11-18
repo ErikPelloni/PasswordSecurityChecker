@@ -8,7 +8,11 @@
 |Orario        |Lavoro svolto                                                  |
 |--------------|---------------------------------------------------------------|
 |11:00 - 11:05 |Creazione nuovo diario e aggiornamento vari file               |
-|11:05 - 12:05 |Algoritmo brute force                                          |
+|11:05 - 12:15 |Algoritmo brute force                                          |
+|13:15 - 14:15 |Aggiornamento documentazione                                   |
+|14:15 - 15:45 |Modifica metodo checkEasy per renderlo utilizzabile all'interno di checkComplex|
+|15:45 - 16:00 |Modifica checkFrequent per evitare problemi di lettura con il file|
+|16:00 - 16:30 |Modifica metodi per renderli utilizzabili all'interno di checkComplex|
 
 
 [//]: <> (##  Problemi riscontrati e soluzioni adottate)
