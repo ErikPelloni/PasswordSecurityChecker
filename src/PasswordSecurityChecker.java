@@ -441,15 +441,14 @@ public class PasswordSecurityChecker {
     public static void main(String[] args){
         PasswordSecurityChecker psc = new PasswordSecurityChecker();
         // controllo argomenti già eseguito
-        //psc.loadData(args);
-        //psc.getData(args);
+        psc.getData(args);
         /*String[] arrayStrings = {"a"};
         List<String> elements = Arrays.asList(arrayStrings);*/
         //System.out.println(elements);
-        // psc.checkEasy();
-        // psc.checkFrequent();
-        // psc.checkComplex();
-        psc.checkBrute();
-        //psc.displayResult(false);
+         psc.checkEasy();
+         psc.checkFrequent();
+         psc.checkComplex();
+        //psc.checkBrute();
+        psc.displayResult(false);
     }
 }
