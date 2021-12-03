@@ -33,8 +33,7 @@ public class PasswordSecurityChecker {
     private int[] birth;
     private int tries;
     private long start, end;
-    private String info, password, firstName;
-    private String birthYear;
+    private String info, password, firstName, last2, birthYear;
     private String bruteString = "out";
 
     /**
@@ -149,6 +148,7 @@ public class PasswordSecurityChecker {
                     throw new IllegalArgumentException();
                 }
                 birthYear = Integer.toString(birth[2]);
+                last2 = birthYear.substring(((int) Math.log10(birth[2])) - 1);
             } catch (ParseException | IllegalArgumentException ex) {
                 // controllo validità sulla data di nascita
                 System.err.println("Incorrect birth date\n");
@@ -344,6 +344,9 @@ public class PasswordSecurityChecker {
                 // substring tra vognome e nome e ultime 2 cifre anno di nascita
                 checkNameCombination(false, false, true);
             }
+            if(!info.isEmpty()){
+                checkInfo();
+            }
         }
 
     }
@@ -354,8 +357,12 @@ public class PasswordSecurityChecker {
     private void checkInfo(){
         tryPassword(info);
         List<String> data = new ArrayList<>();
+        data.add(info);
         if(!name.isEmpty()){
             data.add(name.get(0));
+            for (String string : data) {
+                //System.out.println(string);
+            }
             tryAllPermutations(data, false);
             tryAllPermutations(data, true);
             data.add(name.get(1));
@@ -367,10 +374,15 @@ public class PasswordSecurityChecker {
                 data.remove(name.get(1));
                 tryAllPermutations(data, false);
                 tryAllPermutations(data, true);
+                data.clear();
+                data.add(info);
             }
         }
         if(isBirthValid()){
             data.add(birthYear);
+            for (String string : data) {
+                System.out.println(string);
+            }
             tryAllPermutations(data, false);
             tryAllPermutations(data, true);
         }
@@ -405,9 +417,6 @@ public class PasswordSecurityChecker {
         } else {
             first = 1;
         }
-        String last2 = "";
-        if (last2Digits)
-            last2 = birthYear.substring(((int) Math.log10(birth[2])) - 1);
         StringBuilder sb = new StringBuilder();
         if (!name.isEmpty()) {
             for (int i = 1; i <= name.get(first).length(); i++) {
@@ -425,7 +434,6 @@ public class PasswordSecurityChecker {
                         sb.append(last2);
                         tryPassword(sb.toString());
                         sb.setLength(sb.length() - 2);
-                        ;
                     } else {
                         tryPassword(sb.toString());
                     }
