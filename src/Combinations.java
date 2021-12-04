@@ -12,7 +12,7 @@ public class Combinations {
 
     public static void main(String[] args) {
         allPermutations(new char[]{'a', 'b', 'c', 'd'}, 10)
-            .forEach(s -> System.out.println(s));
+            .forEach(System.out::println);
     }
 
     public static List<String> allPermutations(char[] chars, int maxLength) {
@@ -76,7 +76,7 @@ class Node {
             superstring.append(value);
         }
         
-        if (subnodes.size() == 0) {
+        if (subnodes.isEmpty()) {
             result.add(superstring.toString());
             return result;
         }
