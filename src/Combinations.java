@@ -84,9 +84,7 @@ class Node {
         for (Node node : subnodes) {
             List<String> permutations = node.permutateRecursively(new StringBuilder(superstring.toString()));
 
-            for (String permutation : permutations) {
-                result.add(permutation);
-            }
+            permutations.forEach(result::add);
         }
 
         return result;

@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-
 import java.util.Date;
 import utils.ParamHandler;
 
@@ -24,7 +23,7 @@ import utils.ParamHandler;
 
 public class PasswordSecurityChecker {
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-    private static char[] specials = { '!', '?', '+', '%', '$', '-', '_' };
+    private static char[] specials = { '!', '?', '+', '%', '$', '-', '_', '&'};
 
     private ParamHandler handler;
 
@@ -207,22 +206,47 @@ public class PasswordSecurityChecker {
                 nameYear.add(firstName);
                 nameYear.add(birthYear);
                 tryAllPermutations(nameYear, useSpecials);
+                // stessa cosa ma con il cognome
+                nameYear.remove(firstName);
+                nameYear.add(name.get(1).toLowerCase());
+                tryAllPermutations(nameYear, useSpecials);
 
                 // controllo le password con nome e ultime 2 cifre dell'anno di nascita
-                nameYear.remove(1);
-                nameYear.add(birthYear.substring(((int) Math.log10(birth[2])) - 1));
+                nameYear.remove(nameYear.size() - 1);
+                nameYear.add(firstName);
+                nameYear.remove(birthYear);
+                nameYear.add(last2);
+                tryAllPermutations(nameYear, useSpecials);
+                // stessa cosa ma con il cognome
+                nameYear.remove(firstName);
+                nameYear.add(name.get(1).toLowerCase());
                 tryAllPermutations(nameYear, useSpecials);
 
                 // controlli uguali agli ultimi 2 ma con il nome
                 // in maiuscolo (prima lettera)
-                nameYear.remove(0);
+                nameYear.remove(nameYear.size() - 1);
                 nameYear.add(firstName.substring(0, 1).toUpperCase() +
                         firstName.substring(1));
                 tryAllPermutations(nameYear, useSpecials);
 
+                // cognome
+                nameYear.remove(nameYear.size()-1);
+                nameYear.add(name.get(1).substring(0, 1).toUpperCase() +
+                        name.get(1).substring(1));
+                tryAllPermutations(nameYear, useSpecials);
+
                 // con l'anno intero
-                nameYear.remove(0);
+                nameYear.remove(nameYear.size() - 1);
+                nameYear.add(firstName.substring(0, 1).toUpperCase() +
+                    firstName.substring(1));
+                nameYear.remove(last2);
                 nameYear.add(birthYear);
+                tryAllPermutations(nameYear, useSpecials);
+
+                // con il cognome
+                nameYear.remove(nameYear.size() - 2);
+                nameYear.add(name.get(1).substring(0, 1).toUpperCase() +
+                        name.get(1).substring(1));
                 tryAllPermutations(nameYear, useSpecials);
             }
         }
@@ -290,10 +314,8 @@ public class PasswordSecurityChecker {
 
         if (!name.isEmpty()) {
             // controllo combinazioni di substring tra nome e cognome
-            checkNameCombination(true, false, false);
-
-            // stesso controllo ma con il cognome prima del nome
             checkNameCombination(false, false, false);
+            checkNameCombination(false, false, true);
         }
 
         // controllo se la password è la data di nascita
@@ -336,13 +358,11 @@ public class PasswordSecurityChecker {
             sb.setLength(0);
             if (!name.isEmpty()) {
                 // combinazioni di substring tra nome e cognome e anno di nasicta
-                checkNameCombination(true, true, false);
-                // combinazioni di substring tra cognome e nome e anno di nasicta
-                checkNameCombination(false, true, false);
-                // substring tra nome e cognome e ultime 2 cifre anno di nascita
+                checkNameCombination(true, false, false);
                 checkNameCombination(true, false, true);
-                // substring tra vognome e nome e ultime 2 cifre anno di nascita
-                checkNameCombination(false, false, true);
+                // substring tra nome e cognome e ultime 2 cifre anno di nascita
+                checkNameCombination(false, true, false);
+                checkNameCombination(false, true, true);
             }
             if(!info.isEmpty()){
                 checkInfo();
@@ -360,9 +380,6 @@ public class PasswordSecurityChecker {
         data.add(info);
         if(!name.isEmpty()){
             data.add(name.get(0));
-            for (String string : data) {
-                //System.out.println(string);
-            }
             tryAllPermutations(data, false);
             tryAllPermutations(data, true);
             data.add(name.get(1));
@@ -380,9 +397,6 @@ public class PasswordSecurityChecker {
         }
         if(isBirthValid()){
             data.add(birthYear);
-            for (String string : data) {
-                System.out.println(string);
-            }
             tryAllPermutations(data, false);
             tryAllPermutations(data, true);
         }
@@ -397,46 +411,44 @@ public class PasswordSecurityChecker {
      * Il metodo checkNameCombination controlla combinazioni di substring
      * tra nome e cognome.
      * 
-     * @param first         se {@code true} sarà messo prima il nome, se
-     *                      {@code false}
      *                      sarà messo prima il cognome
-     * @param fullBirthYear se {@code true} verrà aggiunto al controllo anche
+     * @param fullBirthYear se {@code true} verrà aggiunto al controllo
      *                      l'anno di nascita completo
-     * @param last2Digits   se {@code true} verranno agiunte al controllo anche
+     * @param last2Digits   se {@code true} verranno agiunte al controllo
      *                      le ultime due cifre dell'anno di nascita
      *                      Attenzione! Se {@code fullBirthYear} è {@code true}
      *                      {@code last2Digits}
-     *                      verrà considerato false.
+     *                      verrà sempre considerato false.
+     * @param useSpecials se {@code true} le password vengono provate
+     *                    utilizzando anche i caratteri speciali.
      */
-    private void checkNameCombination(boolean nameFirst, boolean fullBirthYear,
-            boolean last2Digits) {
-        int first = 0;
-        int second = 0;
-        if (nameFirst) {
-            second = 1;
-        } else {
-            first = 1;
-        }
-        StringBuilder sb = new StringBuilder();
-        if (!name.isEmpty()) {
-            for (int i = 1; i <= name.get(first).length(); i++) {
-                sb.setLength(0);
-                sb.append(name.get(first).substring(0, i));
-                for (int j = 1; j <= name.get(second).length(); j++) {
-                    sb.replace(i, i + j, "");
-                    sb.append(name.get(second).substring(0, j));
+    private void checkNameCombination(boolean fullBirthYear, boolean last2Digits,
+            boolean useSpecials) {
 
-                    if (fullBirthYear) {
-                        sb.append(birthYear);
-                        tryPassword(sb.toString());
-                        sb.setLength(sb.length() - birthYear.length());
-                    } else if (last2Digits) {
-                        sb.append(last2);
-                        tryPassword(sb.toString());
-                        sb.setLength(sb.length() - 2);
-                    } else {
-                        tryPassword(sb.toString());
-                    }
+        List<String> list = new ArrayList<>();
+        StringBuilder currentName = new StringBuilder();
+        StringBuilder currentSecond = new StringBuilder();
+        
+        // controlli sulla data di nascita già presenti
+        if (fullBirthYear) {
+            list.add(birthYear);
+        } else if (last2Digits) {
+            list.add(last2);
+        }
+        
+        if (!name.isEmpty()) {
+            for (int i = 1; i <= name.get(0).length(); i++) {
+                list.remove(currentName.toString());
+                currentName.setLength(0);
+                currentName.append(name.get(0).substring(0, i));
+                list.add(currentName.toString());
+                for (int j = 1; j <= name.get(1).length(); j++){
+                    list.remove(currentSecond.toString());
+                    currentSecond.setLength(0);
+                    currentSecond.append(name.get(1).substring(0, j));
+                    list.add(currentSecond.toString());
+
+                    tryAllPermutations(list, useSpecials);
                 }
             }
         }
