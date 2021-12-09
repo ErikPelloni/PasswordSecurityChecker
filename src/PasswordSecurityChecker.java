@@ -18,7 +18,7 @@ import utils.ParamHandler;
  * tramite il confronto con una lista di password più comuni.
  * 
  * @author Erik Pelloni
- * @version 1.0 (18.11.2021)
+ * @version 1.0 (09.12.2021)
  */
 
 public class PasswordSecurityChecker {
@@ -282,19 +282,15 @@ public class PasswordSecurityChecker {
         List<String> commons;
         try {
             commons = Files.readAllLines(
-                    Paths.get("../Documenti/passwordComuni.txt"));
+                Paths.get("../Documenti/passwordComuni.txt"));
 
-            for (String s : commons) {
-                tryPassword(s);
-            }
+            commons.forEach(s -> tryPassword(s));
         } catch (IOException ioe) {
             try {
                 commons = Files.readAllLines(
-                        Paths.get("Documenti/passwordComuni.txt"));
+                    Paths.get("Documenti/passwordComuni.txt"));
 
-                for (String s : commons) {
-                    tryPassword(s);
-                }
+                commons.forEach(s -> tryPassword(s));
             } catch (IOException e) {
                 System.err.println("Common passwords file reading error.");
             }
@@ -403,8 +399,45 @@ public class PasswordSecurityChecker {
 
     }
 
+
+    /**
+     * Struttura del metodo presa dalle soluzioni presenti su questa pagina
+     * https://stackoverflow.com/questions/50215907/python-brute-force-password-guesser
+     */
+
     private void checkBrute() {
-        // implementare combinations
+        char[] characters = new char[94];
+        for (int i = 0; i < characters.length; i++) {
+            characters[i] = (char)(i + 33);
+        }
+        int base = characters.length + 1;
+        StringBuilder guess = new StringBuilder();
+        int tests = 1;
+        int c = 0;
+        int m = 0;
+    
+        while (true) {
+            int y = tests;
+            while (true) {
+                c = y % base;
+                m = (int) Math.floor((y - c) / (double) base);
+                y = m;
+                int index = (c - 1);
+                if (index < 0) {
+                    index += characters.length - 1;
+                }
+                guess.insert(0, characters[index]);
+                // guess = characters[index] + guess;
+                if (m == 0) {
+                    break;
+                }
+            }
+    
+            tryPassword(guess.toString(), true);
+            // else
+            tests++;
+            guess.setLength(0);
+        }
     }
 
     /**
@@ -503,6 +536,7 @@ public class PasswordSecurityChecker {
                 s.setLength(s.length() - 1);
             }
         }
+        System.out.println(s.toString());
         tryPassword(s.toString());
     }
 
@@ -516,12 +550,22 @@ public class PasswordSecurityChecker {
      * @param s stringa da controllare
      */
     private void tryPassword(String s) {
+        tryPassword(s, false);
+    }
+
+    /**
+     * Il metodo tryPassword conntrolla se la password trovata è corretta
+     * 
+     * @param s stringa da controllare
+     * @param brute {@code true} se brute force
+     */
+    void tryPassword(String s, boolean brute){
         tries++;
         if (s.equals(password)) {
             // trovata, fermo il tempo di ricerca
             end = System.currentTimeMillis();
             // metodo finale
-            displayResult(true);
+            displayResult(true, brute);
         }
     }
 
@@ -531,11 +575,15 @@ public class PasswordSecurityChecker {
      * 
      * @param isPasswordFound {@code true} se la password è stata trovata
      */
-    private void displayResult(boolean isPasswordFound) {
+    private void displayResult(boolean isPasswordFound, boolean brute) {
         String s = "found";
         if (!isPasswordFound) {
             end = System.currentTimeMillis();
             s = "not found";
+        }
+
+        if(brute){
+            bruteString = "";
         }
 
         long time = end - start;
@@ -559,13 +607,16 @@ public class PasswordSecurityChecker {
          * List<String> elements = Arrays.asList(arrayStrings);
          */
         // System.out.println(elements);
+        System.out.println("Easy search started...\n");
         psc.checkEasy();
+        System.out.println("Frequent search started...\n");
         psc.checkFrequent();
+        System.out.println("Complex search started...\n");
         psc.checkComplex();
         if (psc.handler.getFlag("b")) {
+            System.out.println("Brute force search started...\n");
             psc.checkBrute();
-            psc.bruteString = "";
         }
-        psc.displayResult(false);
+        psc.displayResult(false, psc.handler.getFlag("b"));
     }
 }

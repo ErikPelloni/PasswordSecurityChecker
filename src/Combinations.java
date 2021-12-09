@@ -10,19 +10,18 @@ import java.util.List;
  */
 public class Combinations {
 
-    public static void main(String[] args) {
-        allPermutations(new char[]{'a', 'b', 'c', 'd'}, 10)
-            .forEach(System.out::println);
-    }
-
-    public static List<String> allPermutations(char[] chars, int maxLength) {
+    public static Node createTree(char[] chars, int maxLength) {
         Node root = new Node();
-        
+
         for (int i = 1; i <= maxLength; i++) {
             allPermutations(chars, i, root);
         }
 
-        return root.permutateRecursively();
+        return root;
+    }
+
+    public static List<String> getBranches(Node node) {
+        return node.permutateRecursively();
     }
 
     private static void allPermutations(char[] chars, int depth, Node node) {
@@ -69,6 +68,38 @@ class Node {
         return permutateRecursively(new StringBuilder());
     }
 
+    public static void bruteForce(char[] characters, PasswordSecurityChecker psc) {
+        int base = characters.length + 1;
+        StringBuilder guess = new StringBuilder();
+        int tests = 1;
+        int c = 0;
+        int m = 0;
+    
+        while (true) {
+            int y = tests;
+            while (true) {
+                c = y % base;
+                m = (int) Math.floor((y - c) / (double) base);
+                y = m;
+                int index = (c - 1);
+                if (index < 0) {
+                    index += characters.length - 1;
+                }
+                guess.insert(0, characters[index]);
+                // guess = characters[index] + guess;
+                if (m == 0) {
+                    break;
+                }
+            }
+    
+            System.out.println(guess);
+            psc.tryPassword(guess.toString(), true);
+            // else
+            ++tests;
+            guess.setLength(0);
+        }
+    }
+
     private List<String> permutateRecursively(StringBuilder superstring) {
         List<String> result = new LinkedList<>();
         
@@ -78,6 +109,7 @@ class Node {
         
         if (subnodes.isEmpty()) {
             result.add(superstring.toString());
+            //
             return result;
         }
         
@@ -88,6 +120,27 @@ class Node {
         }
 
         return result;
+    }
+
+    public void permutateRecursively(PasswordSecurityChecker psc) {
+        permutateRecursively(new StringBuilder(), psc);
+    }
+
+    void permutateRecursively(StringBuilder superstring, PasswordSecurityChecker psc) {
+        if (!root) {
+            superstring.append(value);
+        }
+        
+        if (subnodes.isEmpty()) {
+            String pass = superstring.toString();
+            System.out.println(pass);
+            psc.tryPassword(pass, true);
+            return;
+        }
+        
+        for (Node node : subnodes) {
+            node.permutateRecursively(new StringBuilder(superstring.toString()), psc);
+        }
     }
 
 }
