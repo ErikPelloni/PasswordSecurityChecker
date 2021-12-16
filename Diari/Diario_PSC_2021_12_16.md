@@ -8,8 +8,10 @@
 |Orario        |Lavoro svolto                                                  |
 |--------------|---------------------------------------------------------------|
 |11:00 - 11:10 |Creazione nuovo diario e aggiornamento vari file               |
-|11:10 - 11:10 |Aggiornamento documentazione e altri documenti (Ad es. Gantt)  |
+|11:10 - 16:30 |Aggiornamento documentazione e altri documenti (Ad es. Gantt)  |
+|11:10 - 16:30 |Aggiornamento file java                                        |
 
+Ho alternato un po' le cose
 
 [//]: <> (##  Problemi riscontrati e soluzioni adottate)
 

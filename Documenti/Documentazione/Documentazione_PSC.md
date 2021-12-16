@@ -83,7 +83,7 @@
 
   > *Nowadays, everyone has many different accounts for which a password is 
   > required. Choosing a secure password is very important to avoid data theft. 
-  > This programme checks the security of the password entered, based on optional 
+  > This program checks the security of the password entered, based on optional 
   > information passed in as a parameter.*
 
 ### Scopo

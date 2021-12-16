@@ -23,15 +23,15 @@ import utils.ParamHandler;
 
 public class PasswordSecurityChecker {
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-    private static char[] specials = { '!', '?', '+', '%', '$', '-', '_', '&'};
+    private static String[] specials =
+        { "!", "?", "+", "%", "$", "-", "_", "&", "!!"};
 
     private ParamHandler handler;
 
     private List<String> name;
-    // private List<String> info;
+    // private List<String>;
     private int[] birth;
-    private int tries;
-    private long start, end;
+    private long start, end, tries;
     private String info, password, firstName, last2, birthYear;
     private String bruteString = "out";
 
@@ -193,7 +193,7 @@ public class PasswordSecurityChecker {
             for (int i = 0; i < name.size(); i++) {
                 if (useSpecials) {
                     // aggiunta caratteri speciali
-                    for (char c : specials) {
+                    for (String c : specials) {
                         tryPassword(name.get(i) + c);
                     }
                 } else {
@@ -255,7 +255,7 @@ public class PasswordSecurityChecker {
             // controllo se la password è l'anno di nascita
             birthYear = String.valueOf(birth[2]);
             if (useSpecials) {
-                for (char c : specials) {
+                for (String c : specials) {
                     tryPassword(birthYear + c);
                 }
             } else {
@@ -361,7 +361,8 @@ public class PasswordSecurityChecker {
                 checkNameCombination(false, true, true);
             }
             if(!info.isEmpty()){
-                checkInfo();
+                checkInfo(false);
+                checkInfo(true);
             }
         }
 
@@ -370,23 +371,26 @@ public class PasswordSecurityChecker {
     /**
      * Il metodo checkInfo controlla combinazioni con l'informazione aggiuntiva
      */
-    private void checkInfo(){
+    private void checkInfo(boolean useSpecials){
         tryPassword(info);
+        for (String s : specials) {
+            tryPassword(info.concat(s));
+        }
         List<String> data = new ArrayList<>();
         data.add(info);
+        tryAllPermutations(data, useSpecials);
         if(!name.isEmpty()){
             data.add(name.get(0));
-            tryAllPermutations(data, false);
-            tryAllPermutations(data, true);
+            tryAllPermutations(data, useSpecials);
             data.add(name.get(1));
-            tryPassword(data);
+            tryPassword(data, useSpecials);
             if(isBirthValid()){
+                data.clear();
+                data.add(info);
                 data.add(birthYear);
-                tryAllPermutations(data, false);
-                tryAllPermutations(data, true);
+                tryAllPermutations(data, useSpecials);
                 data.remove(name.get(1));
-                tryAllPermutations(data, false);
-                tryAllPermutations(data, true);
+                tryAllPermutations(data, useSpecials);
                 data.clear();
                 data.add(info);
             }
@@ -424,6 +428,7 @@ public class PasswordSecurityChecker {
                 y = m;
                 int index = (c - 1);
                 if (index < 0) {
+                    index = -(-index % characters.length);
                     index += characters.length - 1;
                 }
                 guess.insert(0, characters[index]);
@@ -432,7 +437,6 @@ public class PasswordSecurityChecker {
                     break;
                 }
             }
-    
             tryPassword(guess.toString(), true);
             // else
             tests++;
@@ -475,6 +479,7 @@ public class PasswordSecurityChecker {
                 currentName.setLength(0);
                 currentName.append(name.get(0).substring(0, i));
                 list.add(currentName.toString());
+                tryAllPermutations(list, useSpecials);
                 for (int j = 1; j <= name.get(1).length(); j++){
                     list.remove(currentSecond.toString());
                     currentSecond.setLength(0);
@@ -530,13 +535,12 @@ public class PasswordSecurityChecker {
             s.append(string);
         }
         if (useSpecials) {
-            for (char c : specials) {
+            for (String c : specials) {
                 s.append(c);
                 tryPassword(s.toString());
                 s.setLength(s.length() - 1);
             }
         }
-        System.out.println(s.toString());
         tryPassword(s.toString());
     }
 
