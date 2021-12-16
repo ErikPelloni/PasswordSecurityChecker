@@ -1,50 +1,60 @@
 1. [Introduzione](#introduzione) 
 
-  - [Informazioni sul progetto](#informazioni-sul-progetto)
+    1. [Informazioni sul progetto](#informazioni-sul-progetto)
 
-  - [Abstract](#abstract)
+    1. [Abstract](#abstract)
 
-  - [Scopo](#scopo)
+    1. [Scopo](#scopo)
 
-2. [Analisi](#analisi)
+1. [Analisi](#analisi)
 
-  - [Analisi del dominio](#analisi-del-dominio)
+    1. [Analisi del dominio](#analisi-del-dominio)
   
-  - [Analisi dei mezzi](#analisi-dei-mezzi)
+    1. [Prerequisiti](#prerequisiti)
 
-  - [Analisi e specifica dei requisiti](#analisi-e-specifica-dei-requisiti)
+    1. [Analisi e specifica dei requisiti](#analisi-e-specifica-dei-requisiti)
 
-  - [Use case](#use-case)
+    1. [Use case](#use-case)
 
-  - [Pianificazione](#pianificazione)
+    1. [Pianificazione](#pianificazione)
+
+        - [Gantt Preventivo](#gantt-preventivo)
+
+        - [Gantt Consuntivo](#gantt-consuntivo)
+    
+    1. [Analisi dei mezzi](#analisi-dei-mezzi)
 
 1. [Progettazione](#progettazione)
 
-  - [Design dell’architettura del sistema](#design-dellarchitettura-del-sistema)
+    1. [Design dell’architettura del sistema](#design-dellarchitettura-del-sistema)
 
-  - [Design procedurale](#design-procedurale)
+    1. [Activity Diagram](#activity-diagram)
 
-3. [Implementazione](#implementazione)
+    1. [Descrizione Activity Diagram](#descrizione)
 
-4. [Test](#test)
+    1. [Diagramma delle classi](#diagramma-delle-classi)
 
-  - [Protocollo di test](#protocollo-di-test)
+1. [Implementazione](#implementazione)
 
-  - [Risultati test](#risultati-test)
+1. [Test](#test)
 
-  - [Mancanze/limitazioni conosciute](#mancanze/limitazioni-conosciute)
+    1. [Protocollo di test](#protocollo-di-test)
 
-5. [Consuntivo](#consuntivo)
+    1. [Risultati test](#risultati-test)
 
-6. [Conclusioni](#conclusioni)
+    1. [Mancanze/limitazioni conosciute](#mancanze/limitazioni-conosciute)
 
-  - [Sviluppi futuri](#sviluppi-futuri)
+1. [Consuntivo](#consuntivo)
 
-  - [Considerazioni personali](#considerazioni-personali)
+1. [Conclusioni](#conclusioni)
 
-7. [Sitografia](#sitografia)
+    1. [Sviluppi futuri](#sviluppi-futuri)
 
-8. [Allegati](#allegati)
+    1. [Considerazioni personali](#considerazioni-personali)
+
+1. [Sitografia](#sitografia)
+
+1. [Allegati](#allegati)
 
 
 ## Introduzione
@@ -59,31 +69,22 @@
 
   -   Data di consegna del progetto: 23 Dicembre 2021
 
-### Abstract
-
   -   **Background/Situazione iniziale**:
   Un utente vuole controllare la sicurezza della propria password.
 
   -   **Descrizione del problema e motivazione**: 
   Il programma, nel modo spiegato seguentemente permette di verificare il grado di sicurezza della password in base a dei dati personali. È importante utilizzare delle password efficaci in modo da evitare il furto di account o dati.
 
-  -   **Approccio/Metodi**: Sulla base di alcuni dati personali passati al programma, quest'ultimo proverà a scoprire la password.
+  -   **Approccio/Metodi**: Sulla base di alcuni dati personali eventualmente passati al programma, quest'ultimo proverà a risalire alla password.
 
   -   **Risultati**: Il programma stampera l'esito finale (password trovata/non trovata), il numero di tentativi eseguiti per trovare la password e il tempo impiegato.
 
-  Esempio di abstract:
+ ### Abstract
 
-  > *As the size and complexity of today’s most modern computer chips
-  > increase, new techniques must be developed to effectively design and
-  > create Very Large Scale Integration chips quickly. For this project, a
-  > new type of hardware compiler is created. This hardware compiler will
-  > read a C++ program, and physically design a suitable microprocessor
-  > intended for running that specific program. With this new and powerful
-  > compiler, it is possible to design anything from a small adder, to a
-  > microprocessor with millions of transistors. Designing new computer
-  > chips, such as the Pentium 4, can require dozens of engineers and
-  > months of time. With the help of this compiler, a single person could
-  > design such a large-scale microprocessor in just weeks.*
+  > *Nowadays, everyone has many different accounts for which a password is 
+  > required. Choosing a secure password is very important to avoid data theft. 
+  > This programme checks the security of the password entered, based on optional 
+  > information passed in as a parameter.*
 
 ### Scopo
 
@@ -98,6 +99,7 @@
 
   -   Il prodotto verrà utilizzato per controllare la sicurezza della propria password.
 
+### Prerequisiti
   -   Il prodotto può essere utilizzato da chiunque
 
   -   La competenza richiesta per l'utilizzo di questo programma è saper lanciare un programma tramite linea di comando. Non sono richieste altre conoscenze o competenze.
@@ -122,16 +124,17 @@
 
   |**ID**	|**Titolo**|**Descrizione**			|**Priorità**|**Vers**|**Note**  |
   |-------|----------|-------------|------------|--------|----------|
-  |Req-01|Linea di comando|Il programma sarà eseguibile tramite linea di comando|1|1.0|...|
-  |Req-02 |Dati input|Al programma verranno passati i seguenti dati:<br>  nome e cognome, data di nascita e un terzo dato a propria scelta |1|1.0|...|
-  |Req-03 |Controllo validità |Verrà eseguito un controllo della validità dei dati inseriti|1|1.0|...|
-  |Req-04 |Help |Sarà possibile visualizzare un help che mostra il funzionamento del programma|1|1.0|...|
-  |Req-05 |Controllo semplice|Verranno controllate delle password combinate in modo semplice|1|1.0|...|
-  |Req-06 |Controllo complesso|Verranno controllate delle password combinate in modo più complesso|1|1.0|...|
-  |Req-07 |Controllo password frequenti|Verrà controllata una lista contenente delle password frequenti|1|1.0|...|
-  |Req-08 |Brute force|Se la password non viene trovata con i controlli precedenti si prosegue con un attacco brute force, se l'utente lo decide|2|1.0|...|
-  |Req-09 |Stampa valori|Vengono stampati i tentativi effettuati e il tempo impiegato|1|1.0|...|
-  |Req-10|Script|Sarà possibile passare i dati a uno script tramite file csv, lo script invocherà automaticamente il programma|3|1.1|Da vedere se conviene|
+  |Req-01|Linea di comando|Il programma sarà eseguibile tramite linea di comando|1|1.0||
+  |Req-02 |Dati input|Al programma verranno passati i seguenti dati:<br>  nome e cognome, data di nascita e un terzo dato a propria scelta |1|1.1|I dati sono facoltativi|
+  |Req-03 |Controllo validità |Verrà eseguito un controllo della validità dei dati inseriti|1|1.0||
+  |Req-04 |Help |Sarà possibile visualizzare un help che mostra il funzionamento del programma|1|1.0||
+  |Req-05 |Controllo semplice|Verranno controllate delle password combinate in modo semplice|1|1.0||
+  |Req-06 |Controllo complesso|Verranno controllate delle password combinate in modo più complesso|1|1.0||
+  |Req-07 |Controllo password frequenti|Verrà controllata una lista contenente delle password frequenti|1|1.0||
+  |Req-08 |Brute force|Se la password non viene trovata con i controlli precedenti si prosegue con un attacco brute force, se l'utente lo decide|2|1.0||
+  |Req-09 |Stampa valori|Vengono stampati i tentativi effettuati e il tempo impiegato|1|1.0||
+  |Req-10|Script|Sarà possibile passare i dati a uno script tramite file csv, lo script invocherà automaticamente il programma|3|1.2|Sostituito dal requisito Req-11|
+  |Req-11|Gestione parametri|Il passaggio di parametri viene gestito all'interno del programma, utilizzando una libreria. |2|2.0||
   
   
 
@@ -175,9 +178,15 @@ L'utente è in grado (tramite linea di comando) di verificare la sicurezza della
 #### Gantt consuntivo
 
 ### Analisi dei mezzi
-Per la creazione del progetto è stato utilizzato un PC con windows 10, Java e
+Per la creazione del progetto è stato utilizzato un PC con Windows 10, Java 16 e
 Visual Studio Code, non ci sono altri requisiti a livello hardware per la 
 creazione e lo svolgimento di questo progetto.
+
+Nel mio caso specifico le specifiche del computer sul quale ho lavorato sono le seguenti:
+- Nome SO	Microsoft Windows 10 Enterprise
+- Processore	Intel(R) Core(TM) i5-7360U CPU @ 2.30GHz, 2301 Mhz, 2 core, 4  processori logici
+- Memoria fisica installata (RAM)	16.0 GB
+
 
 È stata utilizzata una libreria scritta da Paolo Bettelini, che permette una
 migliore gestione dei parametri passati come argomenti da linea di comando.
@@ -198,15 +207,6 @@ nell’implementazione del prodotto.)
 
 -   Composto da 1 classe scritta in java.
 
--   I flussi di informazione in ingresso ed in uscita e le
-    relative elaborazioni. Può utilizzare *diagrammi di flusso dei
-    dati* (DFD).
-
--   Eventuale sitemap
-
-### Design procedurale
-<br>
-
 ### Activity Diagram
 
 ![activity](../PSC-Activity_Diagram.png)
@@ -226,33 +226,15 @@ password viene trovata, il programma giunge a termine, se no si passa al control
 + Se la password non è presente nemmeno all'interno della lista, il controllo da compiere è quello delle combinazioni più complesse. Nuovamente la procedura finale è la stessa.
 
 + Infine, se l'utente ha deciso di effettuarla, l'ultima ricerca effettuata è quella brute force. Una volta trovata la password o raggiunto l'eventuale limite (di tempo o di tentativi, stabilito dll'utente) il programma giunge al termine e stampa l'output finale.
+
++ *N.B. I controlli verranno effettuati solamente sui dati passati come parametro all'esecuzione del programma.*
 <br> <br>
 
-### Design delle interfacce
-
-Descrizione delle interfacce interne ed esterne del sistema e
-dell’interfaccia utente. La progettazione delle interfacce è basata
-sulle informazioni ricavate durante la fase di analisi e realizzata
-tramite mockups.
-
-Descrive i concetti dettagliati dell’architettura/sviluppo utilizzando
-ad esempio:
-
--   Diagrammi di flusso e Nassi.
-
--   Tabelle.
-
--   Classi e metodi.
-
--   Tabelle di routing
-
--   Diritti di accesso a condivisioni …
-
-Questi documenti permetteranno di rappresentare i dettagli procedurali
-per la realizzazione del prodotto.
 
 ### Diagramma delle classi
-<img src="../PasswordSecurityChecker_Classe.svg" alt="diagramma classe" width="400"/>
+<img src="../PasswordSecurityChecker_Classe.svg" alt="diagramma classe" width="1400"/>
+
+[Immagine originale diagramma delle classi](../PasswordSecurityChecker_Classe.svg)
 
 ## Implementazione
 
@@ -332,67 +314,20 @@ facilmente generalizzabili o sono specifici di un caso particolare? ecc
 ### Considerazioni personali
   Cosa ho imparato in questo progetto? ecc
 
-## Bibliografia
-
-### Bibliografia per articoli di riviste
-1.  Cognome e nome (o iniziali) dell’autore o degli autori, o nome
-    dell’organizzazione,
-
-2.  Titolo dell’articolo (tra virgolette),
-
-3.  Titolo della rivista (in italico),
-
-4.  Anno e numero
-
-5.  Pagina iniziale dell’articolo,
-
-### Bibliografia per libri
-
-
-1.  Cognome e nome (o iniziali) dell’autore o degli autori, o nome
-    dell’organizzazione,
-
-2.  Titolo del libro (in italico),
-
-3.  ev. Numero di edizione,
-
-4.  Nome dell’editore,
-
-5.  Anno di pubblicazione,
-
-6.  ISBN.
-
 ### Sitografia
 
-1.  URL del sito (se troppo lungo solo dominio, evt completo nel
-    diario),
+- https://www.baeldung.com/java-array-permutations, *Permutations of an Array in Java*, 28.10.2021
 
-2.  Eventuale titolo della pagina (in italico),
+- https://stackoverflow.com/questions/50215907/python-brute-force-password-guesser, 2.12.2021
 
-3.  Data di consultazione (GG-MM-AAAA).
 
-**Esempio:**
-
--   http://standards.ieee.org/guides/style/section7.html, *IEEE
-    Standards Style Manual*, 07-06-2008.
 
 ## Allegati
 
-Elenco degli allegati, esempio:
+-   [Diari di lavoro](../../Diari/)
 
--   Diari di lavoro
+-   [Codici sorgente](../../src)
 
--   Codici sorgente
+-   [Manuale d'uso](..\PasswordSecurityChecker_Guida.docx)
 
--   Istruzioni di installazione del prodotto (con credenziali
-    di accesso) e/o di eventuali prodotti terzi
-
--   Documentazione di prodotti di terzi
-
--   Eventuali guide utente / Manuali di utilizzo
-
--   Mandato / Qdc
-
--   Prodotto
-
--   …
+-   [Qdc](..\QdC_EP_PasswordSecurityChecker.docx)
