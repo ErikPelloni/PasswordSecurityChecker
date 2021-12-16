@@ -15,7 +15,8 @@
 [//]: <> (##  Problemi riscontrati e soluzioni adottate)
 
 
-##  Punto della situazione rispetto alla pianificazione
+[//]: <> (##  Punto della situazione rispetto alla pianificazione)
 
 ## Programma di massima per la prossima giornata di lavoro
-+ continuare checkComplex
++ finire la documentazione
++ mettere a posto gli ultimi dettagli del programa
