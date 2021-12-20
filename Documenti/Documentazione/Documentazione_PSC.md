@@ -38,25 +38,31 @@
 
     1. [Gestione Parametri](#gestione-parametri)
 
-2. [Test](#test)
+    1. [Controllo delle password](#Controllo-delle-password)
+
+        1. [Metodi tryPassword](#Metodi-tryPassword)
+
+        1. [Metodi di controllo](#Metodi-di-controllo)
+
+1. [Test](#test)
 
     1. [Protocollo di test](#protocollo-di-test)
 
-    2. [Risultati test](#risultati-test)
+    1. [Risultati test](#risultati-test)
 
-    3. [Mancanze/limitazioni conosciute](#mancanze/limitazioni-conosciute)
+    1. [Mancanze/limitazioni conosciute](#mancanze/limitazioni-conosciute)
 
-3. [Consuntivo](#consuntivo)
+1. [Consuntivo](#consuntivo)
 
-4. [Conclusioni](#conclusioni)
+1. [Conclusioni](#conclusioni)
 
     1. [Sviluppi futuri](#sviluppi-futuri)
 
-    2. [Considerazioni personali](#considerazioni-personali)
+    1. [Considerazioni personali](#considerazioni-personali)
 
-5. [Sitografia](#sitografia)
+1. [Sitografia](#sitografia)
 
-6. [Allegati](#allegati)
+1. [Allegati](#allegati)
 
 
 ## Introduzione
@@ -285,6 +291,7 @@ public class PasswordSecurityChecker {
   handler.getArg("name");
 }
 ```
+
 la sintassi per l'aggiunta di un parametro a un handler è la seguente
 
 ```java
@@ -309,6 +316,57 @@ L'accesso ai dati può essere effettuato utilizzando come nel seguente esempio
 c.get(Calendar.DAY_OF_MONTH);
 c.get(Calendar.YEAR);
 ```
+
+### Controllo delle password
+
+#### Metodi tryPassword
+
+Per eseguire il controllo vero e proprio di una password ho creato diverse "versioni" del
+metodo `tryPassword`: ognuna delle quali accetta dei parametri diversi dall'altra.
+Il metodo utilizzato da tutti gli altri è quello mostrato qui sotto
+```java
+    void tryPassword(String s, boolean brute){
+        tries++;
+        if (s.equals(password)) {
+            // trovata, fermo il tempo di ricerca
+            end = System.currentTimeMillis();
+            // metodo finale
+            displayResult(true, brute);
+        }
+    }
+``` 
+
+Questo metodo confronta la password con la stringa passata come parametro e se queste corrispondono,
+allora invoca il metodo `displayResult()` per stampare il risultato e terminare il programma.
+Il parametro `brute` specifica se il tentativo è stato effettuato tramite l'attacco brute force.
+
+Altre versioni dello stesso metodo sono ad esempio quelle riportate seguentemente
+
+```java
+    private void tryPassword(String s) {
+        tryPassword(s, false);
+    }
+```
+
+Questo si tratta di un metodo che richiama il suo omonimo (il quale possiede però dei parametri differenti) 
+con il secondo parametro fisso su `false`, in modo da poter definire un valore di "default" e dare quindi la
+possibilità di invocare il metodo senza dover specificare il secondo parametro.
+
+È presente anche un metodo `tryPassword` che accetta come parametro una lista di stringhe.
+Quest'ultimo invocherà il metodo `tryPassword(String s)` su tutti gli elementi della lista e se richiesto aggiunge
+anche dei caratteri speciali alla password da testare.
+
+#### Metodi di controllo
+
+Nel metodo `checkEasy` controllo password semplici come semplicemente il nome, il cognome, l'anno di nascita
+e semplici combinazioni tra queste informazioni. Questi dati però sono opzionali, quindi questi controlli
+potrebbero essere saltati.
+
+Il secondo metodo ad effettuare una ricerca è il metodo `checkFrequent`. Questo controlla se la password si trova all'interno di una 
+[lista di password utilizzate di frequente](https://github.com/danielmiessler/SecLists/blob/master/Passwords/Common-Credentials/)
+con qualche mia aggiunta al milione di password già presenti.
+Le password sono salvate in un file, il metodo le legge, le inserisce all'interno di
+una lista e le prova una ad una utilizzando il metodo tryPassword, mostrato in precedenza.
 
 ## Test
 
@@ -340,10 +398,16 @@ l’errore con eventuali ipotesi di correzione.
 
 ### Mancanze/limitazioni conosciute
 
-Descrizione con motivazione di eventuali elementi mancanti o non
+<!--Descrizione con motivazione di eventuali elementi mancanti o non
 completamente implementati, al di fuori dei test case. Non devono essere
 riportati gli errori e i problemi riscontrati e poi risolti durante il
-progetto.
+progetto.-->
+Mi sono accorto troppo tardi, verso la fine del progetto, di aver non aver lavorato
+nel modo migliore, in quanto non ho dato abbastanza importanza alla
+fase di progettazione e ho fatto troppe cose "sul momento". Un motivo sicuramente è
+la mia poca esperienza, visto che questo si tratta del mio primo progetto con una
+durata simile. Questo errore mi ha fatto capire quanto sia importante una progettazione
+completa e precisa, **prima** di iniziare a scrivere il codice.
 
 ## Consuntivo
 
@@ -361,7 +425,7 @@ facilmente generalizzabili o sono specifici di un caso particolare? ecc
 
 ### Sviluppi futuri
   + Aggiunta input password non in chiaro in modo interattivo
-  + Script per il passaggio dei dati
+  
   + Aggiunta di un'interfaccia grafica
 
 ### Considerazioni personali
@@ -371,7 +435,9 @@ facilmente generalizzabili o sono specifici di un caso particolare? ecc
 
 - https://www.baeldung.com/java-array-permutations, *Permutations of an Array in Java*, 28.10.2021
 
-- https://stackoverflow.com/questions/50215907/python-brute-force-password-guesser, 2.12.2021
+- https://stackoverflow.com/questions/50215907/python-brute-force-password-guesser, 02.12.2021
+
+- https://github.com/LuMug/Mod306, *Modulo 306*, in diverse date
 
 
 

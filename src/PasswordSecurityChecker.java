@@ -284,13 +284,13 @@ public class PasswordSecurityChecker {
             commons = Files.readAllLines(
                 Paths.get("../Documenti/passwordComuni.txt"));
 
-            commons.forEach(s -> tryPassword(s));
+            commons.forEach(this::tryPassword);
         } catch (IOException ioe) {
             try {
                 commons = Files.readAllLines(
                     Paths.get("Documenti/passwordComuni.txt"));
 
-                commons.forEach(s -> tryPassword(s));
+                commons.forEach(this::tryPassword);
             } catch (IOException e) {
                 System.err.println("Common passwords file reading error.");
             }
@@ -360,16 +360,17 @@ public class PasswordSecurityChecker {
                 checkNameCombination(false, true, false);
                 checkNameCombination(false, true, true);
             }
-            if(!info.isEmpty()){
-                checkInfo(false);
-                checkInfo(true);
-            }
         }
 
+        if(!info.isEmpty()){
+            checkInfo(false);
+            checkInfo(true);
+        }
     }
 
     /**
-     * Il metodo checkInfo controlla combinazioni con l'informazione aggiuntiva
+     * Il metodo checkInfo controlla combinazioni con l'informazione aggiuntiva.
+     * @param useSpecial specifica se controllare anche le password con caratteri speciali.
      */
     private void checkInfo(boolean useSpecials){
         tryPassword(info);
@@ -397,8 +398,10 @@ public class PasswordSecurityChecker {
         }
         if(isBirthValid()){
             data.add(birthYear);
-            tryAllPermutations(data, false);
-            tryAllPermutations(data, true);
+            tryAllPermutations(data, useSpecials);
+            data.remove(birthYear);
+            data.add(last2);
+            tryAllPermutations(data, useSpecials);
         }
 
     }
@@ -409,7 +412,11 @@ public class PasswordSecurityChecker {
      * https://stackoverflow.com/questions/50215907/python-brute-force-password-guesser
      */
 
+     /**
+      * Il metodo checkBrute esegue una ricerca brute force per trovare la password.
+      */
     private void checkBrute() {
+        // creo un array contenente tutti i caratteri da utilizzare
         char[] characters = new char[94];
         for (int i = 0; i < characters.length; i++) {
             characters[i] = (char)(i + 33);
@@ -437,8 +444,9 @@ public class PasswordSecurityChecker {
                     break;
                 }
             }
+            System.out.println(guess);
             tryPassword(guess.toString(), true);
-            // else
+            // se non trova la password
             tests++;
             guess.setLength(0);
         }
@@ -531,14 +539,18 @@ public class PasswordSecurityChecker {
      *                    i caratteri speciali in coda.
      */
     private void tryPassword(List<String> elements, boolean useSpecials) {
+        StringBuilder s = new StringBuilder();
         for (String string : elements) {
-            tryPassword(string);
+            s.append(string);
             if (useSpecials) {
                 for (String c : specials) {
-                    tryPassword(string + c);
+                    s.append(c);
+                    tryPassword(s.toString());
+                    s.setLength(s.length() - 1);
                 }
             }
         }
+        tryPassword(s.toString());
     }
 
     private void tryPassword(List<String> elements) {
