@@ -18,7 +18,7 @@ import utils.ParamHandler;
  * tramite il confronto con una lista di password più comuni.
  * 
  * @author Erik Pelloni
- * @version 1.0 (09.12.2021)
+ * @version 1.0 (23.12.2021)
  */
 
 public class PasswordSecurityChecker {
@@ -29,7 +29,6 @@ public class PasswordSecurityChecker {
     private ParamHandler handler;
 
     private List<String> name;
-    // private List<String>;
     private int[] birth;
     private long start, end, tries;
     private String info, password, firstName, last2, birthYear;
@@ -40,7 +39,6 @@ public class PasswordSecurityChecker {
      */
     private PasswordSecurityChecker() {
         name = new ArrayList<>(2);
-        // info = new ArrayList<>();
         birth = new int[3];
         dateFormat.setLenient(false);
         handler = new ParamHandler();
@@ -70,7 +68,7 @@ public class PasswordSecurityChecker {
      */
     private void getData(String[] args) {
 
-        // handler.addArg(argName, mandatory, type, properties);
+        // aggiungo i flag e i parametri all'handler
         handler.addFlag(
                 "h",
                 ParamHandler.propertyOf("Name", "Help"),
@@ -167,10 +165,12 @@ public class PasswordSecurityChecker {
     }
 
     /**
-     * 
+     * Il metodo isBirthValid controlla la validità della data di nascita.
      * @return {@code true} se la data di nascita è stata inserita
      */
     private boolean isBirthValid(){
+        // se la data è stata inserita e ha passato i controlli, il giorno
+        // non puo' sicuramente essere uguale a 0.
         return birth[0] != 0;
     }
 
@@ -383,7 +383,7 @@ public class PasswordSecurityChecker {
             data.add(name.get(0));
             tryAllPermutations(data, useSpecials);
             data.add(name.get(1));
-            tryPassword(data, useSpecials);
+            tryAllPermutations(data, useSpecials);
             if(isBirthValid()){
                 data.clear();
                 data.add(info);
@@ -501,6 +501,7 @@ public class PasswordSecurityChecker {
      * Il metodo prova tutte le combinazioni possibili
      * 
      * @param elements lista di stringhe da controllare
+     * @param useSpecials {@code true} se effettuare ricerca caratteri speciali
      */
     private void tryAllPermutations(List<String> elements, boolean useSpecials) {
         List<String> copy = new ArrayList<>(elements);
@@ -530,18 +531,14 @@ public class PasswordSecurityChecker {
      *                    i caratteri speciali in coda.
      */
     private void tryPassword(List<String> elements, boolean useSpecials) {
-        StringBuilder s = new StringBuilder();
         for (String string : elements) {
-            s.append(string);
-        }
-        if (useSpecials) {
-            for (String c : specials) {
-                s.append(c);
-                tryPassword(s.toString());
-                s.setLength(s.length() - 1);
+            tryPassword(string);
+            if (useSpecials) {
+                for (String c : specials) {
+                    tryPassword(string + c);
+                }
             }
         }
-        tryPassword(s.toString());
     }
 
     private void tryPassword(List<String> elements) {
@@ -606,11 +603,6 @@ public class PasswordSecurityChecker {
         PasswordSecurityChecker psc = new PasswordSecurityChecker();
         // controllo argomenti già eseguito
         psc.getData(args);
-        /*
-         * String[] arrayStrings = {"a"};
-         * List<String> elements = Arrays.asList(arrayStrings);
-         */
-        // System.out.println(elements);
         System.out.println("Easy search started...\n");
         psc.checkEasy();
         System.out.println("Frequent search started...\n");

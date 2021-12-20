@@ -260,7 +260,8 @@ componenti utilizzati. Eventualmente questa va allegata.
 Per eventuali dettagli si possono inserire riferimenti ai diari.
 -->
 ### Gestione parametri
-Per la gestione dei parametri ho utilizzato la libreria ParamHandler di Paolo Bettelini e l'ho implementata in questo modo
+Per la gestione dei parametri ho utilizzato la libreria [ParamHandler](https://github.com/paolobettelini/utils/tree/main/paramhandler) 
+di Paolo Bettelini e l'ho implementata in questo modo
 
 ```java
 public class PasswordSecurityChecker {
@@ -302,7 +303,8 @@ Calendar c = Calendar.getInstance();
 c.setTime(birthDate);
 ```
 
-L'accesso ai dati può essere effettuato utilizzando ad esempio 
+L'accesso ai dati può essere effettuato utilizzando come nel seguente esempio 
+
 ```java
 c.get(Calendar.DAY_OF_MONTH);
 c.get(Calendar.YEAR);
