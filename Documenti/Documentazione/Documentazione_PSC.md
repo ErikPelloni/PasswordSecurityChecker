@@ -36,25 +36,27 @@
 
 1. [Implementazione](#implementazione)
 
-1. [Test](#test)
+    1. [Gestione Parametri](#gestione-parametri)
+
+2. [Test](#test)
 
     1. [Protocollo di test](#protocollo-di-test)
 
-    1. [Risultati test](#risultati-test)
+    2. [Risultati test](#risultati-test)
 
-    1. [Mancanze/limitazioni conosciute](#mancanze/limitazioni-conosciute)
+    3. [Mancanze/limitazioni conosciute](#mancanze/limitazioni-conosciute)
 
-1. [Consuntivo](#consuntivo)
+3. [Consuntivo](#consuntivo)
 
-1. [Conclusioni](#conclusioni)
+4. [Conclusioni](#conclusioni)
 
     1. [Sviluppi futuri](#sviluppi-futuri)
 
-    1. [Considerazioni personali](#considerazioni-personali)
+    2. [Considerazioni personali](#considerazioni-personali)
 
-1. [Sitografia](#sitografia)
+5. [Sitografia](#sitografia)
 
-1. [Allegati](#allegati)
+6. [Allegati](#allegati)
 
 
 ## Introduzione
@@ -122,19 +124,19 @@
 
 
 
-  |**ID**	|**Titolo**|**Descrizione**			|**Priorità**|**Vers**|**Note**  |
-  |-------|----------|-------------|------------|--------|----------|
-  |Req-01|Linea di comando|Il programma sarà eseguibile tramite linea di comando|1|1.0||
-  |Req-02 |Dati input|Al programma verranno passati i seguenti dati:<br>  nome e cognome, data di nascita e un terzo dato a propria scelta |1|1.1|I dati sono facoltativi|
-  |Req-03 |Controllo validità |Verrà eseguito un controllo della validità dei dati inseriti|1|1.0||
-  |Req-04 |Help |Sarà possibile visualizzare un help che mostra il funzionamento del programma|1|1.0||
-  |Req-05 |Controllo semplice|Verranno controllate delle password combinate in modo semplice|1|1.0||
-  |Req-06 |Controllo complesso|Verranno controllate delle password combinate in modo più complesso|1|1.0||
-  |Req-07 |Controllo password frequenti|Verrà controllata una lista contenente delle password frequenti|1|1.0||
-  |Req-08 |Brute force|Se la password non viene trovata con i controlli precedenti si prosegue con un attacco brute force, se l'utente lo decide|2|1.0||
-  |Req-09 |Stampa valori|Vengono stampati i tentativi effettuati e il tempo impiegato|1|1.0||
-  |Req-10|Script|Sarà possibile passare i dati a uno script tramite file csv, lo script invocherà automaticamente il programma|3|1.2|Sostituito dal requisito Req-11|
-  |Req-11|Gestione parametri|Il passaggio di parametri viene gestito all'interno del programma, utilizzando una libreria. |2|2.0||
+  | **ID** | **Titolo**                   | **Descrizione**                                                                                                           | **Priorità** | **Vers** | **Note**                        |
+  | ------ | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------ | -------- | ------------------------------- |
+  | Req-01 | Linea di comando             | Il programma sarà eseguibile tramite linea di comando                                                                     | 1            | 1.0      |                                 |
+  | Req-02 | Dati input                   | Al programma verranno passati i seguenti dati:<br>  nome e cognome, data di nascita e un terzo dato a propria scelta      | 1            | 1.1      | I dati sono facoltativi         |
+  | Req-03 | Controllo validità           | Verrà eseguito un controllo della validità dei dati inseriti                                                              | 1            | 1.0      |                                 |
+  | Req-04 | Help                         | Sarà possibile visualizzare un help che mostra il funzionamento del programma                                             | 1            | 1.0      |                                 |
+  | Req-05 | Controllo semplice           | Verranno controllate delle password combinate in modo semplice                                                            | 1            | 1.0      |                                 |
+  | Req-06 | Controllo complesso          | Verranno controllate delle password combinate in modo più complesso                                                       | 1            | 1.0      |                                 |
+  | Req-07 | Controllo password frequenti | Verrà controllata una lista contenente delle password frequenti                                                           | 1            | 1.0      |                                 |
+  | Req-08 | Brute force                  | Se la password non viene trovata con i controlli precedenti si prosegue con un attacco brute force, se l'utente lo decide | 2            | 1.0      |                                 |
+  | Req-09 | Stampa valori                | Vengono stampati i tentativi effettuati e il tempo impiegato                                                              | 1            | 1.0      |                                 |
+  | Req-10 | Script                       | Sarà possibile passare i dati a uno script tramite file csv, lo script invocherà automaticamente il programma             | 3            | 1.2      | Sostituito dal requisito Req-11 |
+  | Req-11 | Gestione parametri           | Il passaggio di parametri viene gestito all'interno del programma, utilizzando una libreria.                              | 2            | 2.0      |                                 |
   
   
 
@@ -237,7 +239,7 @@ password viene trovata, il programma giunge a termine, se no si passa al control
 [Immagine originale diagramma delle classi](../PasswordSecurityChecker_Classe.svg)
 
 ## Implementazione
-
+<!--
 In questo capitolo dovrà essere mostrato come è stato realizzato il
 lavoro. Questa parte può differenziarsi dalla progettazione in quanto il
 risultato ottenuto non per forza può essere come era stato progettato.
@@ -256,6 +258,55 @@ Non deve apparire nessuna forma di guida d’uso di librerie o di
 componenti utilizzati. Eventualmente questa va allegata.
 
 Per eventuali dettagli si possono inserire riferimenti ai diari.
+-->
+### Gestione parametri
+Per la gestione dei parametri ho utilizzato la libreria ParamHandler di Paolo Bettelini e l'ho implementata in questo modo
+
+```java
+public class PasswordSecurityChecker {
+  ...
+  ParamHandler handler;
+  ...
+  handler.addFlag(
+                "b",
+                ParamHandler.propertyOf("Name", "Brute Force"),
+                ParamHandler.propertyOf("Description", "Performs the brute force attack"));
+
+  handler.addArg(
+                "name", false, "String",
+                ParamHandler.propertyOf("Name", "Name"),
+                ParamHandler.propertyOf("Description", "Name and Surname"),
+                ParamHandler.propertyOf("Format", "Name Surname"),
+                ParamHandler.propertyOf("Example", "John Doe"));
+  ...
+  handler.parseArg();
+  ...
+  handler.getArg("name");
+}
+```
+la sintassi per l'aggiunta di un parametro a un handler è la seguente
+
+```java
+handler.addArg("argName", mandatory, "type", properties);
+```
+
+Per controllare la validità della data di nascita ho utilizzato un oggetto SimpleDateFormat del package java.text
+e gli oggetti Calendar e date del package java.util come mostrato qui sotto
+
+```java
+...
+SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+...
+Date birthDate = dateFormat.parse(handler.getArg("birth"));
+Calendar c = Calendar.getInstance();
+c.setTime(birthDate);
+```
+
+L'accesso ai dati può essere effettuato utilizzando ad esempio 
+```java
+c.get(Calendar.DAY_OF_MONTH);
+c.get(Calendar.YEAR);
+```
 
 ## Test
 
@@ -267,14 +318,14 @@ fungono da garanzia di qualità del prodotto. Ogni test deve essere
 ripetibile alle stesse condizioni.
 
 
-|Test Case      | TC-001                               |
-|---------------|--------------------------------------|
-|**Nome**       |Import a card, but not shown with the GUI |
-|**Riferimento**|REQ-012                               |
-|**Descrizione**|Import a card with KIC, KID and KIK keys with no obfuscation, but not shown with the GUI |
-|**Prerequisiti**|Store on local PC: Profile\_1.2.001.xml (appendix n\_n) and Cards\_1.2.001.txt (appendix n\_n) |
-|**Procedura**     | - Go to “Cards manager” menu, in main page click “Import Profiles” link, Select the “1.2.001.xml” file, Import the Profile - Go to “Cards manager” menu, in main page click “Import Cards” link, Select the “1.2.001.txt” file, Delete the cards, Select the “1.2.001.txt” file, Import the cards |
-|**Risultati attesi**|Keys visible in the DB (OtaCardKey) but not visible in the GUI (Card details) |
+| Test Case            | TC-001                                                                                                                                                                                                                                                                                            |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Nome**             | Import a card, but not shown with the GUI                                                                                                                                                                                                                                                         |
+| **Riferimento**      | REQ-012                                                                                                                                                                                                                                                                                           |
+| **Descrizione**      | Import a card with KIC, KID and KIK keys with no obfuscation, but not shown with the GUI                                                                                                                                                                                                          |
+| **Prerequisiti**     | Store on local PC: Profile\_1.2.001.xml (appendix n\_n) and Cards\_1.2.001.txt (appendix n\_n)                                                                                                                                                                                                    |
+| **Procedura**        | - Go to “Cards manager” menu, in main page click “Import Profiles” link, Select the “1.2.001.xml” file, Import the Profile - Go to “Cards manager” menu, in main page click “Import Cards” link, Select the “1.2.001.txt” file, Delete the cards, Select the “1.2.001.txt” file, Import the cards |
+| **Risultati attesi** | Keys visible in the DB (OtaCardKey) but not visible in the GUI (Card details)                                                                                                                                                                                                                     |
 
 
 ### Risultati test
