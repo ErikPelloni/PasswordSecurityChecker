@@ -30,4 +30,4 @@ Si tratta di un applicativo che, passate alcune informazioni base, prova a forza
 
 [Mandato (QdC)](Documenti/QdC_EP_PasswordSecurityChecker.docx)
 
-[Manuale d'uso](Documenti\PasswordSecurityChecker_Guida.docx)
+[Manuale d'uso](Documenti\PasswordSecurityChecker_Guida.pdf)
