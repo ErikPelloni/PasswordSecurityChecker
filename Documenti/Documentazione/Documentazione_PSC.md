@@ -42,6 +42,8 @@
 
         1. [Metodi tryPassword](#Metodi-tryPassword)
 
+        1. [Metodo tryAllPermutations](#Metodo-tryAllPermutations)
+
         1. [Metodi di controllo](#Metodi-di-controllo)
 
 1. [Test](#test)
@@ -269,7 +271,7 @@ Per eventuali dettagli si possono inserire riferimenti ai diari.
 Per la gestione dei parametri ho utilizzato la libreria [ParamHandler](https://github.com/paolobettelini/utils/tree/main/paramhandler) 
 di Paolo Bettelini e l'ho implementata in questo modo
 
-```java
+```java 
 public class PasswordSecurityChecker {
   ...
   ParamHandler handler;
@@ -297,9 +299,13 @@ la sintassi per l'aggiunta di un parametro a un handler è la seguente
 ```java
 handler.addArg("argName", mandatory, "type", properties);
 ```
+il primo parametro da passare è il nome dell'argomento da aggiungere ad handler.
+Il secondo è un boolean che definisce se l'argomento è obbligatorio o meno, il terzo specifica
+il tipo di dato che si aspetta il parametro (per mostrarlo nell'help) e infine vanno aggiunte le varie
+proprietà (composte da nome e descrizione).<br><br>
 
 Per controllare la validità della data di nascita ho utilizzato un oggetto SimpleDateFormat del package java.text
-e gli oggetti Calendar e date del package java.util come mostrato qui sotto
+e gli oggetti Calendar e Date del package java.util come mostrato qui sotto
 
 ```java
 ...
@@ -309,6 +315,10 @@ Date birthDate = dateFormat.parse(handler.getArg("birth"));
 Calendar c = Calendar.getInstance();
 c.setTime(birthDate);
 ```
+Con il comando parse provo ad inserire i dati dell'utente all'interno della variabile 
+`birthDate`. Nel caso in cui quest'ultimi non fossero validi, verrà sollevata un'eccezione
+di tipo `ParseException`, quindi verranno richiesti nuovamente i dati.
+
 
 L'accesso ai dati può essere effettuato utilizzando come nel seguente esempio 
 
@@ -316,6 +326,9 @@ L'accesso ai dati può essere effettuato utilizzando come nel seguente esempio
 c.get(Calendar.DAY_OF_MONTH);
 c.get(Calendar.YEAR);
 ```
+All'interno del programma non ho tenuto valide le date di nascita con l'anno inferiore a 1000.
+
+
 
 ### Controllo delle password
 
@@ -356,6 +369,17 @@ possibilità di invocare il metodo senza dover specificare il secondo parametro.
 Quest'ultimo invocherà il metodo `tryPassword(String s)` su tutti gli elementi della lista e se richiesto aggiunge
 anche dei caratteri speciali alla password da testare.
 
+#### Metodo tryAllPermutations
+Il metodo `tryAllPermutations`, data una lista di stringhe prova le password composte dalla combinazione degli elementi
+all'interno della stessa.
+
+Per funzionare, come prima cosa eseguo una copia della lista, per poterla manipolare senza cambiare poi l'ordine della
+lista che viene passata come parametro. In seguito viene eseguito un ciclo che in base a un criterio scambia tra di loro
+gli elementi della lista, creando così sempre combinazioni differenti.
+
+All'interno di questo metodo invoco `tryPassword` in modo da controllare subito se la nuova combinazione dei dati corrisponde
+alla password.
+
 #### Metodi di controllo
 
 Nel metodo `checkEasy` controllo password semplici come semplicemente il nome, il cognome, l'anno di nascita
@@ -378,23 +402,59 @@ fungono da garanzia di qualità del prodotto. Ogni test deve essere
 ripetibile alle stesse condizioni.
 
 
-| Test Case            | TC-001                                                                                                                                                                                                                                                                                            |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Nome**             | Import a card, but not shown with the GUI                                                                                                                                                                                                                                                         |
-| **Riferimento**      | REQ-012                                                                                                                                                                                                                                                                                           |
-| **Descrizione**      | Import a card with KIC, KID and KIK keys with no obfuscation, but not shown with the GUI                                                                                                                                                                                                          |
-| **Prerequisiti**     | Store on local PC: Profile\_1.2.001.xml (appendix n\_n) and Cards\_1.2.001.txt (appendix n\_n)                                                                                                                                                                                                    |
-| **Procedura**        | - Go to “Cards manager” menu, in main page click “Import Profiles” link, Select the “1.2.001.xml” file, Import the Profile - Go to “Cards manager” menu, in main page click “Import Cards” link, Select the “1.2.001.txt” file, Delete the cards, Select the “1.2.001.txt” file, Import the cards |
-| **Risultati attesi** | Keys visible in the DB (OtaCardKey) but not visible in the GUI (Card details)                                                                                                                                                                                                                     |
+| Test Case            | TC-01                                                                                                          |
+| -------------------- | -------------------------------------------------------------------------------------------------------------- |
+| **Nome**             | Funzionamento da terminale                                                                                     |
+| **Riferimento**      | REQ-01                                                                                                         |
+| **Descrizione**      | Il programma funziona tramite linea di comando                                                                 |
+| **Prerequisiti**     | Java installato sul computer, essere in possesso del programma jar e un terminale da cui eseguire il programma |
+| **Procedura**        | Aprire il terminale e digitare il comando scritto nella guida per eseguire il programma                        |
+| **Risultati attesi** | Il programma si avvia                                                                                          |
+<br>
+
+| Test Case            | TC-02                                                                                                                |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Nome**             | Dati obbligatori                                                                                                     |
+| **Riferimento**      | REQ-03                                                                                                               |
+| **Descrizione**      | I dati obbligatori sono richiesti                                                                                    |
+| **Prerequisiti**     | Vedi prerequisiti TC-01                                                                                              |
+| **Procedura**        | Avviare il programma senza aggiungere l'argomento -password                                                          |
+| **Risultati attesi** | L'errore viene gestito, il programma mostra il messaggio di help e termina.                                          |
+<br>
+
+| Test Case            | TC-03                                                                                                                |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Nome**             | Controllo dati                                                                                                       |
+| **Riferimento**      | REQ-03                                                                                                               |
+| **Descrizione**      | I dati inseriti verranno controllati                                                                                 |
+| **Prerequisiti**     | Vedi prerequisiti TC-01                                                                                              |
+| **Procedura**        | Avviare il programma passando dei dati sbagliati, ad esempio la data di nascita con valore "02.06.10" oppure "prova" |
+| **Risultati attesi** | L'errore viene gestito, il programma mostra il messaggio di help e termina.                                          |
+<br>
+
+| Test Case            | TC-xx                                                                                                                |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Nome**             | Combinazione con caratteri maiuscoli                                                                                 |
+| **Riferimento**      | REQ-05 / REQ-06                                                                                                      |
+| **Descrizione**      | Viene trovata una password con una combinazione particolare di caratteri in minuscolo e maiuscolo                    |
+| **Prerequisiti**     | Vedi prerequisiti TC-01                                                                                              |
+| **Procedura**        | Avviare il programma passando i dati e una password con una combinazione di maiuscole e minuscole, ad esempio "jOhNDoE" avendo passato il dato "John Doe" come nome |
+| **Risultati attesi** | La password viene trovata senza l'utilizzo dell'attacco brute force                                                  |
 
 
 ### Risultati test
 
-Tabella riassuntiva in cui si inseriscono i test riusciti e non del
+<!--Tabella riassuntiva in cui si inseriscono i test riusciti e non del
 prodotto finale. Se un test non riesce e viene corretto l’errore, questo
 dovrà risultare nel documento finale come riuscito (la procedura della
 correzione apparirà nel diario), altrimenti dovrà essere descritto
-l’errore con eventuali ipotesi di correzione.
+l’errore con eventuali ipotesi di correzione.-->
+
+| Test passati  | Test falliti        |
+| ------------- | ------------------- |
+| TC-01         |                     |
+| TC-02         |                     |
+|               | TC-xx               |
 
 ### Mancanze/limitazioni conosciute
 
@@ -408,6 +468,9 @@ fase di progettazione e ho fatto troppe cose "sul momento". Un motivo sicurament
 la mia poca esperienza, visto che questo si tratta del mio primo progetto con una
 durata simile. Questo errore mi ha fatto capire quanto sia importante una progettazione
 completa e precisa, **prima** di iniziare a scrivere il codice.
+
+Sempre per lo stesso motivo, il mio codice in alcuni punti è molto "hard coded" e 
+a volte parecchio ripetitivo. Con la dovuta progettazione non sarebbe successo.
 
 ## Consuntivo
 
@@ -447,6 +510,6 @@ facilmente generalizzabili o sono specifici di un caso particolare? ecc
 
 -   [Codici sorgente](../../src)
 
--   [Manuale d'uso](..\PasswordSecurityChecker_Guida.docx)
+-   [Manuale d'uso](..\PasswordSecurityChecker_Guida.pdf)
 
 -   [Qdc](..\QdC_EP_PasswordSecurityChecker.docx)
