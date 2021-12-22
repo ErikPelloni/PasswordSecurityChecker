@@ -1,3 +1,7 @@
+# Documentazione PasswordSecurityChecker
+### Erik Pelloni, SAMT I3BB 2021
+<br><br>
+
 1. [Introduzione](#introduzione) 
 
     1. [Informazioni sul progetto](#informazioni-sul-progetto)
@@ -19,10 +23,12 @@
     1. [Pianificazione](#pianificazione)
 
         - [Gantt Preventivo](#gantt-preventivo)
-
-        - [Gantt Consuntivo](#gantt-consuntivo)
     
     1. [Analisi dei mezzi](#analisi-dei-mezzi)
+
+        - [Hardware](#hardware)
+
+        - [Software](#software)
 
 1. [Progettazione](#progettazione)
 
@@ -46,6 +52,8 @@
 
         1. [Metodi di controllo](#Metodi-di-controllo)
 
+        1. [Display risultato](#display-risultato)
+
 1. [Test](#test)
 
     1. [Protocollo di test](#protocollo-di-test)
@@ -55,6 +63,8 @@
     1. [Mancanze/limitazioni conosciute](#mancanze/limitazioni-conosciute)
 
 1. [Consuntivo](#consuntivo)
+
+    - [Gantt Consuntivo](#gantt-consuntivo)
 
 1. [Conclusioni](#conclusioni)
 
@@ -69,7 +79,7 @@
 
 ## Introduzione
 
-#### Informazioni sul progetto
+#### **Informazioni sul progetto**
 
   -   Allievo e docente coinvolti nel progetto: Erik Pelloni, Luca Muggiasca (docente)
 
@@ -94,7 +104,9 @@
   > *Nowadays, everyone has many different accounts for which a password is 
   > required. Choosing a secure password is very important to avoid data theft. 
   > This program checks the security of the password entered, based on optional 
-  > information passed in as a parameter.*
+  > information passed in as a parameter.<br>
+  > Passwords are often the only barrier between you and your personal information
+  > like data, money, privacy or even our identities.*
 
 ### Scopo
 
@@ -181,22 +193,25 @@ L'utente è in grado (tramite linea di comando) di verificare la sicurezza della
 
 ### Pianificazione
 
-#### Gantt preventivo
+#### **Gantt preventivo**
 
 ![ganttPreventivo](../Gantt/Gantt-preventivo.png)
 
-#### Gantt consuntivo
+[Gantt consuntivo](#gantt-consuntivo)
 
 ### Analisi dei mezzi
 Per la creazione del progetto è stato utilizzato un PC con Windows 10, Java 16 e
 Visual Studio Code, non ci sono altri requisiti a livello hardware per la 
 creazione e lo svolgimento di questo progetto.
 
+#### **Hardware**
 Nel mio caso specifico le specifiche del computer sul quale ho lavorato sono le seguenti:
 - Nome SO	Microsoft Windows 10 Enterprise
 - Processore	Intel(R) Core(TM) i5-7360U CPU @ 2.30GHz, 2301 Mhz, 2 core, 4  processori logici
 - Memoria fisica installata (RAM)	16.0 GB
 
+#### **Software**
+- Visual Studio Code (version 1.63)
 
 È stata utilizzata una libreria scritta da Paolo Bettelini, che permette una
 migliore gestione dei parametri passati come argomenti da linea di comando.
@@ -221,7 +236,7 @@ nell’implementazione del prodotto.)
 
 ![activity](../PSC-Activity_Diagram.png)
 
-#### Descrizione
+#### **Descrizione**
 
 Lanciando l'applicazione si passano i dati necessari per il funzionmento.
 <br>Se le informazioni non sono passate nel modo corretto o se l'utente ha scento di visualizzare l'help, l'applicazione mostra l'help (che spiega la formattazine dei valori di input).
@@ -248,10 +263,6 @@ password viene trovata, il programma giunge a termine, se no si passa al control
 
 ## Implementazione
 <!--
-In questo capitolo dovrà essere mostrato come è stato realizzato il
-lavoro. Questa parte può differenziarsi dalla progettazione in quanto il
-risultato ottenuto non per forza può essere come era stato progettato.
-
 Sulla base di queste informazioni il lavoro svolto dovrà essere
 riproducibile.
 
@@ -299,6 +310,7 @@ la sintassi per l'aggiunta di un parametro a un handler è la seguente
 ```java
 handler.addArg("argName", mandatory, "type", properties);
 ```
+
 il primo parametro da passare è il nome dell'argomento da aggiungere ad handler.
 Il secondo è un boolean che definisce se l'argomento è obbligatorio o meno, il terzo specifica
 il tipo di dato che si aspetta il parametro (per mostrarlo nell'help) e infine vanno aggiunte le varie
@@ -328,37 +340,50 @@ c.get(Calendar.YEAR);
 ```
 All'interno del programma non ho tenuto valide le date di nascita con l'anno inferiore a 1000.
 
-
-
 ### Controllo delle password
 
-#### Metodi tryPassword
+#### **Metodi tryPassword**
 
 Per eseguire il controllo vero e proprio di una password ho creato diverse "versioni" del
 metodo `tryPassword`: ognuna delle quali accetta dei parametri diversi dall'altra.
 Il metodo utilizzato da tutti gli altri è quello mostrato qui sotto
 ```java
-    void tryPassword(String s, boolean brute){
-        tries++;
-        if (s.equals(password)) {
-            // trovata, fermo il tempo di ricerca
-            end = System.currentTimeMillis();
-            // metodo finale
-            displayResult(true, brute);
-        }
+void tryPassword(String s, boolean brute){
+  boolean flag = false;
+  tries++;
+  if(password.equals(s)){
+    flag = true;
+  }else if(!brute){
+    for (String special : specials) {
+      tries++;
+      if(password.equals(s + special)){
+        flag = true;
+        break;
+      }
     }
+  }
+  if (flag) {
+    // trovata, fermo il tempo di ricerca
+    end = System.currentTimeMillis();
+    // metodo finale
+    displayResult(true, brute);
+  }
+}
 ``` 
 
 Questo metodo confronta la password con la stringa passata come parametro e se queste corrispondono,
 allora invoca il metodo `displayResult()` per stampare il risultato e terminare il programma.
+Se invece la password non è la stringa passata, allora prova a concatenare dei caratteri speciali in
+coda a quest'ultima. Questa cosa viene ripetuta per ogni stringa controllata (tranne per quelle ricavate
+dall'attacco brute force).
 Il parametro `brute` specifica se il tentativo è stato effettuato tramite l'attacco brute force.
 
 Altre versioni dello stesso metodo sono ad esempio quelle riportate seguentemente
 
 ```java
-    private void tryPassword(String s) {
-        tryPassword(s, false);
-    }
+private void tryPassword(String s) {
+    tryPassword(s, false);
+}
 ```
 
 Questo si tratta di un metodo che richiama il suo omonimo (il quale possiede però dei parametri differenti) 
@@ -366,12 +391,33 @@ con il secondo parametro fisso su `false`, in modo da poter definire un valore d
 possibilità di invocare il metodo senza dover specificare il secondo parametro.
 
 È presente anche un metodo `tryPassword` che accetta come parametro una lista di stringhe.
-Quest'ultimo invocherà il metodo `tryPassword(String s)` su tutti gli elementi della lista e se richiesto aggiunge
-anche dei caratteri speciali alla password da testare.
+Quest'ultimo invocherà il metodo `tryPassword(String s)` concatenando tutti gli elementi della lista, anche utilizzando
+l'altro metodo `tryPassword`.
 
-#### Metodo tryAllPermutations
+#### **Metodo tryAllPermutations**
 Il metodo `tryAllPermutations`, data una lista di stringhe prova le password composte dalla combinazione degli elementi
 all'interno della stessa.
+
+```java
+private void tryAllPermutations(List<String> elements) {
+    List<String> copy = new ArrayList<>(elements);
+    int[] indexes = new int[copy.size()];
+    tryPassword(copy);
+
+    int i = 0;
+    while (i < copy.size()) {
+        if (indexes[i] < i) {
+            Collections.swap(copy, i % 2 == 0 ? 0 : indexes[i], i);
+            tryPassword(copy);
+            indexes[i]++;
+            i = 0;
+        } else {
+            indexes[i] = 0;
+            i++;
+        }
+    }
+}
+```
 
 Per funzionare, come prima cosa eseguo una copia della lista, per poterla manipolare senza cambiare poi l'ordine della
 lista che viene passata come parametro. In seguito viene eseguito un ciclo che in base a un criterio scambia tra di loro
@@ -380,7 +426,7 @@ gli elementi della lista, creando così sempre combinazioni differenti.
 All'interno di questo metodo invoco `tryPassword` in modo da controllare subito se la nuova combinazione dei dati corrisponde
 alla password.
 
-#### Metodi di controllo
+#### **Metodi di controllo**
 
 Nel metodo `checkEasy` controllo password semplici come semplicemente il nome, il cognome, l'anno di nascita
 e semplici combinazioni tra queste informazioni. Questi dati però sono opzionali, quindi questi controlli
@@ -392,14 +438,67 @@ con qualche mia aggiunta al milione di password già presenti.
 Le password sono salvate in un file, il metodo le legge, le inserisce all'interno di
 una lista e le prova una ad una utilizzando il metodo tryPassword, mostrato in precedenza.
 
+Il terzo metodo, `checkComplex` controlla sempre le password utilizzando i dati passati come parametro, creando però anche delle 
+combinazioni più complicate ed articolate concatenando diversi dati.
+
+L'ultimo "metodo di controllo" è `checkBrute`, si tratta di un metodo che esegue una [ricerca brute force](https://en.wikipedia.org/wiki/Brute-force_attack)
+utilizzando un array di caratteri che creo, inserendone solo alcuni (94 per la precisione), in modo da velocizzare il controllo
+
+```java
+private void checkBrute() {
+    // creo un array contenente tutti i caratteri da utilizzare
+    char[] characters = new char[94];
+    for (int i = 0; i < characters.length; i++) {
+        characters[i] = (char)(i + 33);
+    }
+    int base = characters.length + 1;
+    StringBuilder guess = new StringBuilder();
+    int tests = 1;
+    int c = 0;
+    int m = 0;
+
+    while (true) {
+        int y = tests;
+        while (true) {
+            c = y % base;
+            m = (int) Math.floor((y - c) / (double) base);
+            y = m;
+            int index = (c - 1);
+            if (index < 0) {
+                index = -(-index % characters.length);
+                index += characters.length - 1;
+            }
+            guess.insert(0, characters[index]);
+            if (m == 0) {
+                break;
+            }
+        }
+        tryPassword(guess.toString(), true);
+        // se non trova la password
+        tests++;
+        guess.setLength(0);
+    }
+}
+```
+
+
+
+### Display risultato
+
+Il metodo `displayResult` è il metodo che serve per stampare il risultato della ricerca e terminare il programma.
+
+Riceve i parametri per gestire il fatto che la password sia stata trovata e nel caso in cui fosse così se fosse 
+stata trovata utilizzando l'attacco brute force oppure no. 
+
+
 ## Test
 
 ### Protocollo di test
 
-Definire in modo accurato tutti i test che devono essere realizzati per
-garantire l’adempimento delle richieste formulate nei requisiti. I test
-fungono da garanzia di qualità del prodotto. Ogni test deve essere
-ripetibile alle stesse condizioni.
+I test sono realizzati per garantire l’adempimento delle richieste formulate nei requisiti e fungono da garanzia di qualità del prodotto. 
+Ogni test è ripetibile alle stesse condizioni.
+
+*N.B. I dati inseriti come parametro sono dei dati di esempio, per testare il corretto funzionamento del programma.*
 
 
 | Test Case            | TC-01                                                                                                          |
@@ -432,7 +531,77 @@ ripetibile alle stesse condizioni.
 | **Risultati attesi** | L'errore viene gestito, il programma mostra il messaggio di help e termina.                                          |
 <br>
 
-| Test Case            | TC-xx                                                                                                                |
+| Test Case            | TC-04                                                                                                                |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Nome**             | Help                                                                                                                 |
+| **Riferimento**      | REQ-04                                                                                                               |
+| **Descrizione**      | Sarà possibile visualizzare un help che mostra il funzionamento del programma                                        |
+| **Prerequisiti**     | Vedi prerequisiti TC-01                                                                                              |
+| **Procedura**        | Avviare il programma aggiungendo il parametro "-h"                                                                   |
+| **Risultati attesi** | Verrà mostrato il messaggi di help e il programma terminerà                                                          |
+<br>
+
+| Test Case            | TC-05                                                                                                                |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Nome**             | Password semplice                                                                                                    |
+| **Riferimento**      | REQ-05                                                                                                               |
+| **Descrizione**      | La password viene trovata senza utilizzare l'attacco brute force                                                     |
+| **Prerequisiti**     | Vedi prerequisiti TC-01                                                                                              |
+| **Procedura**        | Avviare il programma inserendo il nome e con password uguale al nome, ad esempio -name "John Doe" -password "John"   |
+| **Risultati attesi** | La password viene trovata senza l'attacco brute force, velocemente con pochi tentativi                               |
+<br>
+
+| Test Case            | TC-06                                                                                                                |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Nome**             | Password complessa                                                                                                   |
+| **Riferimento**      | REQ-06                                                                                                               |
+| **Descrizione**      | La password viene trovata senza utilizzare l'attacco brute force                                                     |
+| **Prerequisiti**     | Vedi prerequisiti TC-01                                                                                              |
+| **Procedura**        | Avviare il programma inserendo i seguenti parametri:-name "John Doe" -birth "01.01.1970" -password "Doe70John!!"     |
+| **Risultati attesi** | La password viene trovata senza l'attacco brute force.                                                               |
+<br>
+
+| Test Case            | TC-07                                                                                                                |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Nome**             | Password comune                                                                                                      |
+| **Riferimento**      | REQ-07                                                                                                               |
+| **Descrizione**      | La password viene trovata senza utilizzare l'attacco brute force                                                     |
+| **Prerequisiti**     | Vedi prerequisiti TC-01                                                                                              |
+| **Procedura**        | Avviare il programma inserendo il parametro -password "Password" (presente all'interno della lista)                  |
+| **Risultati attesi** | La password viene trovata senza l'attacco brute force.                                                               |
+<br>
+
+| Test Case            | TC-08                                                                                                                |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Nome**             | Brute force                                                                                                          |
+| **Riferimento**      | REQ-08                                                                                                               |
+| **Descrizione**      | La password viene trovata utilizzando l'attacco brute force                                                          |
+| **Prerequisiti**     | Vedi prerequisiti TC-01                                                                                              |
+| **Procedura**        | Avviare il programma inserendo i parametri seguenti: -password "}k" -b (in modo da non aspettare troppo tempo)       |
+| **Risultati attesi** | La password viene trovata utilizzando l'attacco brute force.                                                         |
+<br>
+
+| Test Case            | TC-09                                                                                                                |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Nome**             | Stampa risultato positivo                                                                                            |
+| **Riferimento**      | REQ-08                                                                                                               |
+| **Descrizione**      | Se la password viene trovata, dev'essere stampato il risultato a terminale                                           |
+| **Prerequisiti**     | Vedi prerequisiti TC-01                                                                                              |
+| **Procedura**        | Avviare il programma inserendo i parametri seguenti: -password "Password"                                            |
+| **Risultati attesi** | "Password found in ... minutes,... and with ... tries without using brute force"                                     |
+<br>
+
+| Test Case            | TC-10                                                                                                                |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Nome**             | Stampa risultato negativo                                                                                            |
+| **Riferimento**      | REQ-08                                                                                                               |
+| **Descrizione**      | Se la password non viene trovata, dev'essere stampato il risultato a terminale                                       |
+| **Prerequisiti**     | Vedi prerequisiti TC-01                                                                                              |
+| **Procedura**        | Avviare il programma inserendo i parametri seguenti: -password "Kaoabsoj" (senza il parametro "-b" per brute force)  |
+| **Risultati attesi** | "Password not found in ... minutes,... and with ... tries without using brute force"                                 |
+<br>
+
+| Test Case            | TC-11                                                                                                                |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | **Nome**             | Combinazione con caratteri maiuscoli                                                                                 |
 | **Riferimento**      | REQ-05 / REQ-06                                                                                                      |
@@ -440,21 +609,34 @@ ripetibile alle stesse condizioni.
 | **Prerequisiti**     | Vedi prerequisiti TC-01                                                                                              |
 | **Procedura**        | Avviare il programma passando i dati e una password con una combinazione di maiuscole e minuscole, ad esempio "jOhNDoE" avendo passato il dato "John Doe" come nome |
 | **Risultati attesi** | La password viene trovata senza l'utilizzo dell'attacco brute force                                                  |
+<br>
 
+| Test Case            | TC-12                                                                                                                |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Nome**             | Secondo nome e/o secondo cognome                                                                                     |
+| **Riferimento**      | REQ-02                                                                                                               |
+| **Descrizione**      | È possibile inserire più nomi e cognomi                                                                              |
+| **Prerequisiti**     | Vedi prerequisiti TC-01                                                                                              |
+| **Procedura**        | Avviare il programma inserendo come parametro -name una stringa che contenga più nomi "John Junior Doe Smith"        |
+| **Risultati attesi** | I nomi e cognomi vengono salvati                                                                                     |
+<br>
 
 ### Risultati test
-
-<!--Tabella riassuntiva in cui si inseriscono i test riusciti e non del
-prodotto finale. Se un test non riesce e viene corretto l’errore, questo
-dovrà risultare nel documento finale come riuscito (la procedura della
-correzione apparirà nel diario), altrimenti dovrà essere descritto
-l’errore con eventuali ipotesi di correzione.-->
 
 | Test passati  | Test falliti        |
 | ------------- | ------------------- |
 | TC-01         |                     |
 | TC-02         |                     |
-|               | TC-xx               |
+| TC-03         |                     |
+| TC-04         |                     |
+| TC-05         |                     |
+| TC-06         |                     |
+| TC-07         |                     |
+| TC-08         |                     |
+| TC-09         |                     |
+| TC-10         |                     |
+|               | TC-11               |
+| TC-12         |                     |
 
 ### Mancanze/limitazioni conosciute
 
@@ -472,27 +654,63 @@ completa e precisa, **prima** di iniziare a scrivere il codice.
 Sempre per lo stesso motivo, il mio codice in alcuni punti è molto "hard coded" e 
 a volte parecchio ripetitivo. Con la dovuta progettazione non sarebbe successo.
 
+Alcune cose sono riuscito a metterle a posto alla fine, ma altre non sono riuscito.
+
 ## Consuntivo
 
-Consuntivo del tempo di lavoro effettivo e considerazioni riguardo le
-differenze rispetto alla pianificazione (cap 1.7) (ad esempio Gannt
-consuntivo).
+![Gantt consuntivo](path)
+
+In termini di tempo, con il progetto sono rimasto in grandi linee nei tempi.
+Questo progetto in particolare, avendo il tempo può essere sempre portato in
+avanti, aggiungendo dei tentativi di password diversi.
+
+L'unica cosa che per ciò che riguarda la gestione del tempo non è andata proprio 
+bene è stata la documentazione, sono arrivato a concentrare una grandissima parte
+del lavoro nelle ultime settimane invece che documentare passo passo durante il 
+lavoro e durante lo sviluppo.
 
 ## Conclusioni
 
-Quali sono le implicazioni della mia soluzione? Che impatto avrà?
-Cambierà il mondo? È un successo importante? È solo un’aggiunta
-marginale o è semplicemente servita per scoprire che questo percorso è
-stato una perdita di tempo? I risultati ottenuti sono generali,
-facilmente generalizzabili o sono specifici di un caso particolare? ecc
+Purtroppo devo dire di non essere soddisfatto al 100% del mio prodotto finale,
+sono sicuro che con una progettazione più completa e precisa avrei potuto
+ottenere un risultato migliore. C'è anche da dire che questo è il primo progetto
+con una durata simile al quale lavoro;
+nonostante non sia totalmente soddisfatto sono molto contento di averci lavorato
+e di averlo comunque portato a termine, ottenendo un prodotto funzionante.
+
+Per questo, credo che il progetto sia riuscito.
+
+È stato abbastanza impegnativo, com'è giusto che sia, ma sento di aver appreso
+molto da quest'esperienza e che mi sarà molto utile in futuro.
+
+Dubito altamente che cambierà il mondo, però ha cambiato me, in particolare il
+mio modo di pensare e lavorare a un progetto.
 
 ### Sviluppi futuri
+  + Modifica della logica per rimuovere parti "hard coded" e provare
+  più combinazioni, ad esempio con le maiuscole/minuscole
+
+  + Aggiunta password con caratteri speciali al posto di lettere,
+  ad esempio 'a' --> '@'
+
   + Aggiunta input password non in chiaro in modo interattivo
   
   + Aggiunta di un'interfaccia grafica
 
 ### Considerazioni personali
-  Cosa ho imparato in questo progetto? ecc
+Come già scritto in precedenza, questo si tratta del mio primo progetto con una durata simile.
+Ho imparato molte cose, alcune più legate direttamente al linguaggio di programmazione, quindi
+conoscenze più tecniche per ciò che riguarda java, altre invece più per quanto riguarda la gestione
+di un progetto. Sicuramente quest'esperienza mi ha aiutato a capire bene, provandolo in prima persona,
+quanto sia fondamentale che la fase di progettazione sia svolta bene e fino ai più piccoli particolari
+per una buona riuscita del progetto. Bisogna cominciare a produrre codice solo una volta che si ha
+una progettazione completa e specifica.
+
+Personalmente mi è piaciuto lavorare da solo, mi piace avere indipendenza, anche se devo ammettere che,
+paricolarmente per la documentazione, sono arrivato un po' alla fine a recuperare il lavoro non 
+completato durante i mesi di lavoro.
+
+Sono sicuro che quest'esperienza mi sarà utile in fururo, per i prossimi progetti.
 
 ### Sitografia
 
@@ -501,8 +719,6 @@ facilmente generalizzabili o sono specifici di un caso particolare? ecc
 - https://stackoverflow.com/questions/50215907/python-brute-force-password-guesser, 02.12.2021
 
 - https://github.com/LuMug/Mod306, *Modulo 306*, in diverse date
-
-
 
 ## Allegati
 
@@ -513,3 +729,5 @@ facilmente generalizzabili o sono specifici di un caso particolare? ecc
 -   [Manuale d'uso](..\PasswordSecurityChecker_Guida.pdf)
 
 -   [Qdc](..\QdC_EP_PasswordSecurityChecker.docx)
+
+@ErikPelloni
