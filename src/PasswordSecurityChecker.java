@@ -178,62 +178,50 @@ public class PasswordSecurityChecker {
      * Il metodo checkEasy prova a trovare la password utilizzando i dati
      * passati come input e semplici combinazioni tra quest'ultimi.
      * 
-     * @param useSpecials se {@code true} le password vengono provate
-     *                    utilizzando anche i caratteri speciali.
      */
-    private void checkEasy(boolean useSpecials) {
+    private void checkEasy() {
         // faccio partire il tempo della ricerca
-        if (!useSpecials) {
-            start = System.currentTimeMillis();
-        }
-
+        start = System.currentTimeMillis();
+        
         if (!name.isEmpty()) {
             firstName = name.get(0).toLowerCase();
             // controllo se la password è il nome o il cognome
-            for (int i = 0; i < name.size(); i++) {
-                if (useSpecials) {
-                    // aggiunta caratteri speciali
-                    for (String c : specials) {
-                        tryPassword(name.get(i) + c);
-                    }
-                } else {
-                    tryPassword(name.get(i));
-                }
-            }
+            name.forEach(this::tryPassword);
+
             if (isBirthValid()) {
                 // controllo le password con nome e anno di nascita
                 List<String> nameYear = new ArrayList<>();
                 nameYear.add(firstName);
                 nameYear.add(birthYear);
-                tryAllPermutations(nameYear, useSpecials);
+                tryAllPermutations(nameYear);
                 // stessa cosa ma con il cognome
                 nameYear.remove(firstName);
                 nameYear.add(name.get(1).toLowerCase());
-                tryAllPermutations(nameYear, useSpecials);
+                tryAllPermutations(nameYear);
 
                 // controllo le password con nome e ultime 2 cifre dell'anno di nascita
                 nameYear.remove(nameYear.size() - 1);
                 nameYear.add(firstName);
                 nameYear.remove(birthYear);
                 nameYear.add(last2);
-                tryAllPermutations(nameYear, useSpecials);
+                tryAllPermutations(nameYear);
                 // stessa cosa ma con il cognome
                 nameYear.remove(firstName);
                 nameYear.add(name.get(1).toLowerCase());
-                tryAllPermutations(nameYear, useSpecials);
+                tryAllPermutations(nameYear);
 
                 // controlli uguali agli ultimi 2 ma con il nome
                 // in maiuscolo (prima lettera)
                 nameYear.remove(nameYear.size() - 1);
                 nameYear.add(firstName.substring(0, 1).toUpperCase() +
                         firstName.substring(1));
-                tryAllPermutations(nameYear, useSpecials);
+                tryAllPermutations(nameYear);
 
                 // cognome
                 nameYear.remove(nameYear.size()-1);
                 nameYear.add(name.get(1).substring(0, 1).toUpperCase() +
                         name.get(1).substring(1));
-                tryAllPermutations(nameYear, useSpecials);
+                tryAllPermutations(nameYear);
 
                 // con l'anno intero
                 nameYear.remove(nameYear.size() - 1);
@@ -241,37 +229,23 @@ public class PasswordSecurityChecker {
                     firstName.substring(1));
                 nameYear.remove(last2);
                 nameYear.add(birthYear);
-                tryAllPermutations(nameYear, useSpecials);
+                tryAllPermutations(nameYear);
 
                 // con il cognome
                 nameYear.remove(nameYear.size() - 2);
                 nameYear.add(name.get(1).substring(0, 1).toUpperCase() +
                         name.get(1).substring(1));
-                tryAllPermutations(nameYear, useSpecials);
+                tryAllPermutations(nameYear);
             }
         }
 
         if (isBirthValid()) {
             // controllo se la password è l'anno di nascita
             birthYear = String.valueOf(birth[2]);
-            if (useSpecials) {
-                for (String c : specials) {
-                    tryPassword(birthYear + c);
-                }
-            } else {
-                tryPassword(birthYear);
-            }
+            tryPassword(birthYear);
+            
         }
 
-    }
-
-    /**
-     * Il metodo checkEasy senza parametri, invoca quello principale con il
-     * parametro {@code false}, in modo da eseguire il checkEasy nel modo
-     * "semplice".
-     */
-    private void checkEasy() {
-        checkEasy(false);
     }
 
     /**
@@ -302,16 +276,11 @@ public class PasswordSecurityChecker {
      * delle combinazioni più complesse tra i dati passati come input.
      */
     private void checkComplex() {
-        // controlla le combinazioni semplici con l'aggiunta dei
-        // caratteri speciali (tranne le combinazioni con la data di nascita)
-        checkEasy(true);
-
         StringBuilder sb = new StringBuilder();
 
         if (!name.isEmpty()) {
             // controllo combinazioni di substring tra nome e cognome
-            checkNameCombination(false, false, false);
-            checkNameCombination(false, false, true);
+            checkNameCombination(false, false);
         }
 
         // controllo se la password è la data di nascita
@@ -354,54 +323,50 @@ public class PasswordSecurityChecker {
             sb.setLength(0);
             if (!name.isEmpty()) {
                 // combinazioni di substring tra nome e cognome e anno di nasicta
-                checkNameCombination(true, false, false);
-                checkNameCombination(true, false, true);
+                checkNameCombination(true, false);
                 // substring tra nome e cognome e ultime 2 cifre anno di nascita
-                checkNameCombination(false, true, false);
-                checkNameCombination(false, true, true);
+                checkNameCombination(false, true);
             }
         }
 
         if(!info.isEmpty()){
-            checkInfo(false);
-            checkInfo(true);
+            checkInfo();
         }
     }
 
     /**
      * Il metodo checkInfo controlla combinazioni con l'informazione aggiuntiva.
-     * @param useSpecial specifica se controllare anche le password con caratteri speciali.
      */
-    private void checkInfo(boolean useSpecials){
+    private void checkInfo(){
         tryPassword(info);
         for (String s : specials) {
             tryPassword(info.concat(s));
         }
         List<String> data = new ArrayList<>();
         data.add(info);
-        tryAllPermutations(data, useSpecials);
+        tryAllPermutations(data);
         if(!name.isEmpty()){
             data.add(name.get(0));
-            tryAllPermutations(data, useSpecials);
+            tryAllPermutations(data);
             data.add(name.get(1));
-            tryAllPermutations(data, useSpecials);
+            tryAllPermutations(data);
             if(isBirthValid()){
                 data.clear();
                 data.add(info);
                 data.add(birthYear);
-                tryAllPermutations(data, useSpecials);
+                tryAllPermutations(data);
                 data.remove(name.get(1));
-                tryAllPermutations(data, useSpecials);
+                tryAllPermutations(data);
                 data.clear();
                 data.add(info);
             }
         }
         if(isBirthValid()){
             data.add(birthYear);
-            tryAllPermutations(data, useSpecials);
+            tryAllPermutations(data);
             data.remove(birthYear);
             data.add(last2);
-            tryAllPermutations(data, useSpecials);
+            tryAllPermutations(data);
         }
 
     }
@@ -444,7 +409,6 @@ public class PasswordSecurityChecker {
                     break;
                 }
             }
-            System.out.println(guess);
             tryPassword(guess.toString(), true);
             // se non trova la password
             tests++;
@@ -464,11 +428,8 @@ public class PasswordSecurityChecker {
      *                      Attenzione! Se {@code fullBirthYear} è {@code true}
      *                      {@code last2Digits}
      *                      verrà sempre considerato false.
-     * @param useSpecials se {@code true} le password vengono provate
-     *                    utilizzando anche i caratteri speciali.
      */
-    private void checkNameCombination(boolean fullBirthYear, boolean last2Digits,
-            boolean useSpecials) {
+    private void checkNameCombination(boolean fullBirthYear, boolean last2Digits) {
 
         List<String> list = new ArrayList<>();
         StringBuilder currentName = new StringBuilder();
@@ -487,14 +448,13 @@ public class PasswordSecurityChecker {
                 currentName.setLength(0);
                 currentName.append(name.get(0).substring(0, i));
                 list.add(currentName.toString());
-                tryAllPermutations(list, useSpecials);
+                tryAllPermutations(list);
                 for (int j = 1; j <= name.get(1).length(); j++){
                     list.remove(currentSecond.toString());
                     currentSecond.setLength(0);
                     currentSecond.append(name.get(1).substring(0, j));
                     list.add(currentSecond.toString());
-
-                    tryAllPermutations(list, useSpecials);
+                    tryAllPermutations(list);
                 }
             }
         }
@@ -509,9 +469,8 @@ public class PasswordSecurityChecker {
      * Il metodo prova tutte le combinazioni possibili
      * 
      * @param elements lista di stringhe da controllare
-     * @param useSpecials {@code true} se effettuare ricerca caratteri speciali
      */
-    private void tryAllPermutations(List<String> elements, boolean useSpecials) {
+    private void tryAllPermutations(List<String> elements) {
         List<String> copy = new ArrayList<>(elements);
         int[] indexes = new int[copy.size()];
         tryPassword(copy);
@@ -520,7 +479,7 @@ public class PasswordSecurityChecker {
         while (i < copy.size()) {
             if (indexes[i] < i) {
                 Collections.swap(copy, i % 2 == 0 ? 0 : indexes[i], i);
-                tryPassword(copy, useSpecials);
+                tryPassword(copy);
                 indexes[i]++;
                 i = 0;
             } else {
@@ -532,29 +491,16 @@ public class PasswordSecurityChecker {
 
     /**
      * Il metodo tryPassword conntrolla se la password trovata è corretta
-     * concatenando tutti gli elementi presenti nella lista.
-     * 
-     * @param elements    lista di strighe che concatenate formano la password
-     * @param useSpecials se {@code true} vengono controllate le password con
-     *                    i caratteri speciali in coda.
+     * concatenando tutti gli elementi presenti nella lista e i caratteri 
+     * speciali.
+     * @param elements lista di strighe che concatenate formano la password
      */
-    private void tryPassword(List<String> elements, boolean useSpecials) {
+    private void tryPassword(List<String> elements) {
         StringBuilder s = new StringBuilder();
         for (String string : elements) {
             s.append(string);
-            if (useSpecials) {
-                for (String c : specials) {
-                    s.append(c);
-                    tryPassword(s.toString());
-                    s.setLength(s.length() - 1);
-                }
-            }
         }
         tryPassword(s.toString());
-    }
-
-    private void tryPassword(List<String> elements) {
-        tryPassword(elements, false);
     }
 
     /**
@@ -573,8 +519,20 @@ public class PasswordSecurityChecker {
      * @param brute {@code true} se brute force
      */
     void tryPassword(String s, boolean brute){
+        boolean flag = false;
         tries++;
-        if (s.equals(password)) {
+        if(password.equals(s)){
+            flag = true;
+        }else if(!brute){
+            for (String special : specials) {
+                tries++;
+                if(password.equals(s + special)){
+                    flag = true;
+                    break;
+                }
+            }
+        }
+        if (flag) {
             // trovata, fermo il tempo di ricerca
             end = System.currentTimeMillis();
             // metodo finale
