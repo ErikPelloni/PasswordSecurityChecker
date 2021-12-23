@@ -258,13 +258,13 @@ public class PasswordSecurityChecker {
             commons = Files.readAllLines(
                 Paths.get("../Documenti/passwordComuni.txt"));
 
-            commons.forEach(this::tryPassword);
+            commons.forEach(s -> tryPassword(s,false,true));
         } catch (IOException ioe) {
             try {
                 commons = Files.readAllLines(
                     Paths.get("Documenti/passwordComuni.txt"));
 
-                commons.forEach(this::tryPassword);
+                    commons.forEach(s -> tryPassword(s,false,true));
             } catch (IOException e) {
                 System.err.println("Common passwords file reading error.");
             }
@@ -400,16 +400,14 @@ public class PasswordSecurityChecker {
                 y = m;
                 int index = (c - 1);
                 if (index < 0) {
-                    index = -(-index % characters.length);
-                    index += characters.length - 1;
+                    index = characters.length - 1 -(-index % characters.length);
                 }
                 guess.insert(0, characters[index]);
-                // guess = characters[index] + guess;
                 if (m == 0) {
                     break;
                 }
             }
-            tryPassword(guess.toString(), true);
+            tryPassword(guess.toString(), true, false);
             // se non trova la password
             tests++;
             guess.setLength(0);
@@ -509,7 +507,7 @@ public class PasswordSecurityChecker {
      * @param s stringa da controllare
      */
     private void tryPassword(String s) {
-        tryPassword(s, false);
+        tryPassword(s, false, false);
     }
 
     /**
@@ -517,13 +515,14 @@ public class PasswordSecurityChecker {
      * 
      * @param s stringa da controllare
      * @param brute {@code true} se brute force
+     * @param common {@code true} se password comune 
      */
-    void tryPassword(String s, boolean brute){
+    void tryPassword(String s, boolean brute, boolean common){
         boolean flag = false;
         tries++;
         if(password.equals(s)){
             flag = true;
-        }else if(!brute){
+        }else if(!(brute || common)){
             for (String special : specials) {
                 tries++;
                 if(password.equals(s + special)){

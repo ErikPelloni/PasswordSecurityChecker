@@ -1,8 +1,0 @@
-Brute force in py
-https://stackoverflow.com/questions/50215907/python-brute-force-password-guesser
-
-in java
-1) https://github.com/R-e-t-u-r-n-N-u-l-l/Java-Algorithms/blob/master/BruteForce.java
-
-
-MANCA GANTT CONSUNTIVO NELLA DOC

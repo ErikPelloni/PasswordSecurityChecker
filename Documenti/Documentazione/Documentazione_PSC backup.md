@@ -40,19 +40,17 @@
 
     1. [Diagramma delle classi](#diagramma-delle-classi)
 
-<br><br><br><br><br><br><br>
-
-4. [Implementazione](#implementazione)
+1. [Implementazione](#implementazione)
 
     1. [Gestione Parametri](#gestione-parametri)
 
-    1. [Controllo delle password](#controllo-delle-password)
+    1. [Controllo delle password](#Controllo-delle-password)
 
-        1. [Metodi tryPassword](#metodi-tryPassword)
+        1. [Metodi tryPassword](#Metodi-tryPassword)
 
-        1. [Metodo tryAllPermutations](#metodo-tryAllPermutations)
+        1. [Metodo tryAllPermutations](#Metodo-tryAllPermutations)
 
-        1. [Metodi di controllo](#metodi-di-controllo)
+        1. [Metodi di controllo](#Metodi-di-controllo)
 
         1. [Display risultato](#display-risultato)
 
@@ -77,7 +75,7 @@
 1. [Sitografia](#sitografia)
 
 1. [Allegati](#allegati)
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
 
 ## Introduzione
 
@@ -118,7 +116,6 @@
   Lo scopo del progetto è quello di creare un programma che sia in grado di dare un feedback riguardante la sicurezza di una 
   password. Questo viene fatto cercando di trovare la password utilizzando delle combinazioni tra i dati passati come parametri
   e nel caso in cui la password non venisse trovata, con un attacco brute force.
-<br><br><br><br><br><br><br><br><br><br>
 
 ## Analisi
 
@@ -194,7 +191,6 @@ requisiti.
 
 **Sotto requisiti**: elementi che compongono il requisito.
 
-<br><br><br><br><br><br><br><br><br>
 
 ### Use case
 ![useCase](../use_case.png)
@@ -210,7 +206,6 @@ L'utente è in grado (tramite linea di comando) di verificare la sicurezza della
 [Documento originale (.mpp)](../Gantt/PasswordSecurityChecker-preventivo.mpp)
 
 [Gantt consuntivo](#gantt-consuntivo)
-<br><br><br><br><br><br><br><br><br><br>
 
 ### Analisi dei mezzi
 Per la creazione del progetto è stato utilizzato un PC con Windows 10, Java 16 e
@@ -244,7 +239,6 @@ nell’implementazione del prodotto.)
 -   Si tratta di un programma che viene invocato tramite linea di comando e con il passaggio di argomenti.
 
 -   Composto da 1 classe scritta in java.
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 ### Activity Diagram
 
@@ -281,7 +275,6 @@ il programma giunge al termine e stampa l'output finale.
 ![Diagramma classe](../PasswordSecurityChecker_Classe.svg)
 
 [Immagine originale diagramma delle classi](../PasswordSecurityChecker_Classe.svg)
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 ## Implementazione
 
@@ -328,7 +321,6 @@ proprietà (composte da nome e descrizione).<br><br>
 
 Per controllare la validità della data di nascita ho utilizzato un oggetto SimpleDateFormat del package java.text
 e gli oggetti Calendar e Date del package java.util come mostrato qui sotto
-<br><br><br><br><br>
 
 ```java
 ...
@@ -522,7 +514,7 @@ Ogni test è ripetibile alle stesse condizioni.
 | **Prerequisiti**     | Java installato sul computer, essere in possesso del programma jar e un terminale da cui eseguire il programma |
 | **Procedura**        | Aprire il terminale e digitare il comando scritto nella guida per eseguire il programma                        |
 | **Risultati attesi** | Il programma si avvia                                                                                          |
-<br><br><br><br><br><br>
+<br>
 
 | Test Case            | TC-02                                                                                                                |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------- |
@@ -552,7 +544,7 @@ Ogni test è ripetibile alle stesse condizioni.
 | **Prerequisiti**     | Vedi prerequisiti TC-01                                                                                              |
 | **Procedura**        | Avviare il programma aggiungendo il parametro "-h"                                                                   |
 | **Risultati attesi** | Verrà mostrato il messaggi di help e il programma terminerà                                                          |
-<br><br><br><br><br><br><br><br><br>
+<br>
 
 | Test Case            | TC-05                                                                                                                |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------- |
@@ -582,7 +574,7 @@ Ogni test è ripetibile alle stesse condizioni.
 | **Prerequisiti**     | Vedi prerequisiti TC-01                                                                                              |
 | **Procedura**        | Avviare il programma inserendo il parametro -password "Password" (presente all'interno della lista)                  |
 | **Risultati attesi** | La password viene trovata senza l'attacco brute force.                                                               |
-<br><br><br><br><br>
+<br>
 
 | Test Case            | TC-08                                                                                                                |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------- |
@@ -612,7 +604,7 @@ Ogni test è ripetibile alle stesse condizioni.
 | **Prerequisiti**     | Vedi prerequisiti TC-01                                                                                              |
 | **Procedura**        | Avviare il programma inserendo i parametri seguenti: -password "Kaoabsoj" (senza il parametro "-b" per brute force)  |
 | **Risultati attesi** | "Password not found in ... minutes,... and with ... tries without using brute force"                                 |
-<br><br><br><br><br><br><br>
+<br>
 
 | Test Case            | TC-11                                                                                                                |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------- |
@@ -632,7 +624,7 @@ Ogni test è ripetibile alle stesse condizioni.
 | **Prerequisiti**     | Vedi prerequisiti TC-01                                                                                              |
 | **Procedura**        | Avviare il programma inserendo come parametro -name una stringa che contenga più nomi "John Junior Doe Smith"        |
 | **Risultati attesi** | I nomi e cognomi vengono salvati                                                                                     |
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br>
 
 ### Risultati test
 
@@ -664,7 +656,6 @@ Sempre per lo stesso motivo, il mio codice in alcuni punti è molto "hard coded"
 a volte parecchio ripetitivo. Con la dovuta progettazione non sarebbe successo.
 
 Alcune cose sono riuscito a metterle a posto alla fine, ma altre non sono riuscito.
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 ## Consuntivo
 
@@ -701,7 +692,6 @@ molto da quest'esperienza e che mi sarà molto utile in futuro.
 
 Dubito altamente che cambierà il mondo, però ha cambiato me, in particolare il
 mio modo di pensare e lavorare a un progetto.
-<br><br><br><br><br><br><br>
 
 ### Sviluppi futuri
   + Modifica della logica per rimuovere parti "hard coded" e provare
