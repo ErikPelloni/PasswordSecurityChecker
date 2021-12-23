@@ -24,6 +24,8 @@ Si tratta di un applicativo che, passate alcune informazioni base, prova a forza
 ## Collegamenti
 [Documentazione](Documenti/Documentazione/Documentazione_PSC.md)
 
+[Documentazione (PDF)](Documenti/Documentazione/Documentazione_PSC.pdf)
+
 [Diari](Diari/)
 
 [Gantt](Documenti/Gantt/)
